@@ -27,6 +27,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.screens.LikeScreen
+import com.example.myapplication.screens.AttractionScreen
+import com.example.myapplication.screens.ProfileScreen
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -59,9 +62,9 @@ data class BottomNavItem(
 object Constants {
     val BottomNavItems = listOf(
         BottomNavItem(
-            label = "Places",
+            label = "Attractions",
             icon = Icons.Filled.Place,
-            route = "place"
+            route = "attractions"
         ),
         BottomNavItem(
             label = "Liked",
@@ -85,15 +88,15 @@ fun NavHostContainer(
         navController = navController,
 
         // set the start destination as home
-        startDestination = "place",
+        startDestination = "attractions",
 
         // Set the padding provided by scaffold
         modifier = Modifier.padding(paddingValues = padding),
 
         builder = {
             // route : Home
-            composable("place") {
-                PlaceScreen()
+            composable("attractions") {
+                AttractionScreen()
             }
             // route : search
             composable("like") {
