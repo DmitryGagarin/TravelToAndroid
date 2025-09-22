@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.screens.utils
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -7,10 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.myapplication.screens.AttractionScreen
-import com.example.myapplication.screens.LikeScreen
-import com.example.myapplication.screens.ProfileScreen
-import com.example.myapplication.screens.SettingsScreen
+import com.example.myapplication.screens.attractions.AttractionScreen
+import com.example.myapplication.screens.attractions.AttractionsScreen
+import com.example.myapplication.screens.main.LikeScreen
+import com.example.myapplication.screens.main.ProfileScreen
+import com.example.myapplication.screens.settings.SettingsScreen
 import com.example.myapplication.screens.settings.CreateArticleScreen
 import com.example.myapplication.screens.settings.CreateAttractionScreen
 import com.example.myapplication.screens.settings.EditAccountScreen
@@ -24,23 +25,22 @@ fun NavHostContainer(
 ) {
     NavHost(
         navController = navController,
-
-        // set the start destination as home
         startDestination = "attractions",
-
-        // Set the padding provided by scaffold
         modifier = Modifier.padding(paddingValues = padding),
 
         builder = {
-            // route : Home
             composable("attractions") {
-                AttractionScreen()
+                AttractionsScreen(navController = navController)
             }
-            // route : search
+            composable("attraction") {
+                AttractionScreen(
+                    navController = navController,
+                    onBackClick = { navController.popBackStack() },
+                )
+            }
             composable("like") {
-                LikeScreen()
+                LikeScreen(navController = navController)
             }
-            // route : profile
             composable("profile") {
                 ProfileScreen(navController = navController)
             }
