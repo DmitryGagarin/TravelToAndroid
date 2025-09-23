@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -77,6 +78,12 @@ fun SettingsScreen(onBackClick: () -> Unit, navController: NavController) {
                 text = "Moderation",
                 icon = Icons.Filled.Send,
                 route = "moderation",
+                navController = navController
+            )
+            SettingItem(
+                text = "Leave Account",
+                icon = Icons.Filled.Warning,
+                route = "login",
                 navController = navController
             )
         }

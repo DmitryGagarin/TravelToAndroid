@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Icon
@@ -65,6 +66,11 @@ object Constants {
             route = "like"
         ),
         BottomNavItem(
+            label = "Articles",
+            icon = Icons.Default.Menu,
+            route = "articles"
+        ),
+        BottomNavItem(
             label = "Account",
             icon = Icons.Filled.Person,
             route = "profile"
@@ -75,7 +81,6 @@ object Constants {
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
     NavigationBar(
-        // set background color
         containerColor = Color(0xFF0F9D58)
     ) {
         // observe the backstack

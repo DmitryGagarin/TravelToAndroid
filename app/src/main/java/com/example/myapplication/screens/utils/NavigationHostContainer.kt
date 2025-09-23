@@ -9,6 +9,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.myapplication.screens.attractions.AttractionScreen
 import com.example.myapplication.screens.attractions.AttractionsScreen
+import com.example.myapplication.screens.auth.LoginScreen
+import com.example.myapplication.screens.auth.RegistrationScreen
+import com.example.myapplication.screens.auth.ResetPasswordScreen
 import com.example.myapplication.screens.main.LikeScreen
 import com.example.myapplication.screens.main.ProfileScreen
 import com.example.myapplication.screens.settings.SettingsScreen
@@ -25,10 +28,19 @@ fun NavHostContainer(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "attractions",
+        startDestination = "login",
         modifier = Modifier.padding(paddingValues = padding),
 
         builder = {
+            composable("login") {
+                LoginScreen(navController = navController)
+            }
+            composable("registration") {
+                RegistrationScreen(navController = navController)
+            }
+            composable("reset_password") {
+                ResetPasswordScreen(navController = navController)
+            }
             composable("attractions") {
                 AttractionsScreen(navController = navController)
             }
