@@ -26,6 +26,7 @@ fun AttractionCard(
     title: String,
     type: String,
     description: String,
+    hasMoreButton: Boolean,
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
@@ -65,9 +66,11 @@ fun AttractionCard(
                 contentDescription = "Profile",
                 tint = Color(0xFFDC143C)
             )
-            Button(
-                onClick = { navController.navigate("attraction") }
-            ) { Text(text = "More") }
+            if (hasMoreButton) {
+                Button(
+                    onClick = { navController.navigate("attraction") }
+                ) { Text(text = "More") }
+            }
         }
     }
 }

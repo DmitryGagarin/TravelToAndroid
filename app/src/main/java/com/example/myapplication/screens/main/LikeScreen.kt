@@ -24,8 +24,9 @@ fun LikeScreen(navController: NavController) {
     ) {
         AttractionCard(
             title = stringResource(R.string.title),
-            description = stringResource(R.string.description),
             type = stringResource(R.string.type),
+            description = stringResource(R.string.description),
+            hasMoreButton = true,
             modifier = Modifier.align(Alignment.CenterHorizontally),
             navController = navController
         )
@@ -34,6 +35,7 @@ fun LikeScreen(navController: NavController) {
             title = stringResource(R.string.title),
             type = stringResource(R.string.type),
             description = stringResource(R.string.description),
+            hasMoreButton = true,
             modifier = Modifier.align(Alignment.CenterHorizontally),
             navController = navController
         )
@@ -42,6 +44,7 @@ fun LikeScreen(navController: NavController) {
             title = stringResource(R.string.title),
             type = stringResource(R.string.type),
             description = stringResource(R.string.description),
+            hasMoreButton = true,
             modifier = Modifier.align(Alignment.CenterHorizontally),
             navController = navController
         )
