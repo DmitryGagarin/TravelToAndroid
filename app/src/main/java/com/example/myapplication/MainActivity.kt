@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import BottomNavigationBar
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,22 +10,15 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Place
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.utils.NavHostContainer
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.example.myapplication.navigation.NavHostContainer
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,10 +27,21 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyApplicationTheme {
                 val navController = rememberNavController()
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+                val hideBottomBarRoute = listOf(
+                    "login", "registration", "reset_password"
+                )
+                val shouldShowBottomBar = !hideBottomBarRoute.any { route ->
+                    currentRoute?.matches(route.toRegex()) == true
+                }
+
                 Surface(color = Color.White) {
                     Scaffold(
                         bottomBar = {
-                            BottomNavigationBar(navController = navController)
+                            if (shouldShowBottomBar) {
+                                BottomNavigationBar(navController = navController)
+                            }
                         }, content = { padding ->
                             NavHostContainer(navController = navController, padding = padding)
                         }
@@ -76,48 +81,4 @@ object Constants {
             route = "profile"
         )
     )
-}
-
-@Composable
-fun BottomNavigationBar(navController: NavHostController) {
-    NavigationBar(
-        containerColor = Color(0xFF0F9D58)
-    ) {
-        // observe the backstack
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-
-        // observe current route to change the icon
-        // color,label color when navigated
-        val currentRoute = navBackStackEntry?.destination?.route
-
-        // Bottom nav items we declared
-        Constants.BottomNavItems.forEach { navItem ->
-
-            // Place the bottom nav items
-            NavigationBarItem(
-                // it currentRoute is equal then its selected route
-                selected = currentRoute == navItem.route,
-                // navigate on click
-                onClick = {
-                    navController.navigate(navItem.route)
-                },
-                // Icon of navItem
-                icon = {
-                    Icon(imageVector = navItem.icon, contentDescription = navItem.label)
-                },
-                // label
-                label = {
-                    Text(text = navItem.label)
-                },
-                alwaysShowLabel = false,
-
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color.White, // Icon color when selected
-                    unselectedIconColor = Color.White, // Icon color when not selected
-                    selectedTextColor = Color.White, // Label color when selected
-                    indicatorColor = Color(0xFF195334) // Highlight color for selected item
-                )
-            )
-        }
-    }
 }

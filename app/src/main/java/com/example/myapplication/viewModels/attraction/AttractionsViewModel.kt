@@ -1,4 +1,4 @@
-package com.example.myapplication.viewModels
+package com.example.myapplication.viewModels.attraction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class AttractionViewModel : ViewModel() {
+class AttractionsViewModel : ViewModel() {
     private val _attractions = MutableStateFlow<List<AttractionModel>>(emptyList())
     val attractions: StateFlow<List<AttractionModel>> get() = _attractions.asStateFlow()
 
@@ -24,29 +24,16 @@ class AttractionViewModel : ViewModel() {
     }
 
     fun loadPublishedAttractions() {
-        println("🔄 Attempting to connect to: ${RetrofitClient.BASE_URL}")
-//        if (_attractions.value.isNotEmpty()) return
-
         _isLoading.value = true
         _error.value = null
 
         viewModelScope.launch {
             try {
-                println("Testing network connection...")
-
-                // Test with a simple API call first
                 val response = RetrofitClient.attractionService.getPublishedAttractions()
-                println("✅ API call successful!")
-                println("Response: $response")
-
                 _attractions.value = response._embedded.attractionModelList
-                println("Loaded ${_attractions.value.size} attractions")
-
             } catch (e: Exception) {
-                println("❌ API call failed: ${e.message}")
                 e.printStackTrace()
 
-                // Provide more specific error messages
                 _error.value = when {
                     e.message?.contains("EPERM") == true -> "Network permission denied. Check internet permissions."
                     e.message?.contains("failed to connect") == true -> "Cannot connect to server. Check URL and server status."

@@ -24,11 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.myapplication.attractions.AttractionCard
-import com.example.myapplication.viewModels.AttractionViewModel
+import com.example.myapplication.viewModels.attraction.AttractionsViewModel
 
 @Composable
 fun AttractionsView(navController: NavController) {
-    val viewModel: AttractionViewModel = viewModel()
+    val viewModel: AttractionsViewModel = viewModel()
     val attractions by viewModel.attractions.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
@@ -98,9 +98,6 @@ fun AttractionsView(navController: NavController) {
                         hasMoreButton = true,
                         modifier = Modifier.fillMaxWidth(),
                         navController = navController,
-//                        onMoreClick = {
-//                            navController.navigate("attractionDetail/${attraction.name}")
-//                        }
                     )
                 }
             }

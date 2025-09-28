@@ -1,24 +1,26 @@
 package com.example.myapplication.views.auth
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.myapplication.viewModels.user.SignInViewModel
 
 @Composable
 fun LoginView(
-    navController: NavController
+    navController: NavController,
 ) {
+    val viewModel: SignInViewModel = viewModel()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val error by viewModel.error.collectAsState()
+
+    var login by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -26,18 +28,65 @@ fun LoginView(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TextField(value = "", onValueChange = {}, label = { Text("Login") })
-        TextField(value = "", onValueChange = {}, label = { Text("Password") })
+        // Email/Login field
+        TextField(
+            value = login,
+            onValueChange = { login = it },
+            label = { Text("Login") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Password field
+        TextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Login button
         Button(
-            onClick = { navController.navigate("attractions") }
-        ) { Text(text = "Login") }
-        Spacer(modifier =  Modifier.height(10.dp))
+            onClick = {
+                viewModel.signInUser(login, password) {
+                    navController.navigate("attractions")
+                }
+            },
+            enabled = !isLoading,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = if (isLoading) "Logging in..." else "Login")
+        }
+
+        // Error message
+        if (error != null) {
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(
+                text = error ?: "",
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
         Button(
-            onClick = { navController.navigate("registration") }
-        ) { Text(text = "Registration") }
-        Spacer(modifier =  Modifier.height(10.dp))
+            onClick = { navController.navigate("registration") },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Registration")
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
         Button(
-            onClick = { navController.navigate("reset_password") }
-        ) { Text(text = "Reset password") }
+            onClick = { navController.navigate("reset_password") },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Reset password")
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.myapplication.utils
+package com.example.myapplication.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import com.example.myapplication.views.attraction.AttractionView
 import com.example.myapplication.views.attraction.AttractionsView
 import com.example.myapplication.views.auth.LoginView
-import com.example.myapplication.views.auth.RegistrationView
+import com.example.myapplication.views.auth.RegistrationFirstView
 import com.example.myapplication.views.auth.ResetPasswordView
 import com.example.myapplication.views.user.LikeView
 import com.example.myapplication.views.user.ProfileView
@@ -20,6 +20,7 @@ import com.example.myapplication.views.attraction.CreateAttractionView
 import com.example.myapplication.views.settings.EditAccountView
 import com.example.myapplication.views.admin.ModerationView
 import com.example.myapplication.views.RateScreen
+import com.example.myapplication.views.auth.RegistrationSecondView
 
 @Composable
 fun NavHostContainer(
@@ -36,7 +37,10 @@ fun NavHostContainer(
                 LoginView(navController = navController)
             }
             composable("registration") {
-                RegistrationView(navController = navController)
+                RegistrationFirstView(navController = navController)
+            }
+            composable("registration_second") {
+                RegistrationSecondView(navController = navController)
             }
             composable("reset_password") {
                 ResetPasswordView(navController = navController)
@@ -44,10 +48,12 @@ fun NavHostContainer(
             composable("attractions") {
                 AttractionsView(navController = navController)
             }
-            composable("attraction") {
+            composable("attraction/{attractionName}") {
+                val attractionName: String = it.arguments?.getString("attractionName").toString()
                 AttractionView(
                     navController = navController,
                     onBackClick = { navController.popBackStack() },
+                    attractionName = attractionName
                 )
             }
             composable("like") {

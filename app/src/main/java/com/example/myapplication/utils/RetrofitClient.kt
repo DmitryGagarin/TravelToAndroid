@@ -1,6 +1,8 @@
 package com.example.myapplication.utils
 
-import com.example.myapplication.attractions.AttractionService
+import com.example.myapplication.service.AttractionService
+import com.example.myapplication.service.DiscussionService
+import com.example.myapplication.service.UserService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -17,5 +19,13 @@ object RetrofitClient {
 
     val attractionService: AttractionService by lazy {
         retrofit.create(AttractionService::class.java)
+    }
+
+    val discussionService: DiscussionService by lazy {
+        retrofit.create(DiscussionService::class.java)
+    }
+
+    val userService: UserService by lazy {
+        retrofit.create(UserService::class.java)
     }
 }

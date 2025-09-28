@@ -1,5 +1,6 @@
-package com.example.myapplication.attractions
+package com.example.myapplication.service
 
+import com.example.myapplication.attractions.AttractionCreateForm
 import com.example.myapplication.models.PagedAttractionResponse
 import com.example.myapplication.models.AttractionModel
 import retrofit2.http.Body

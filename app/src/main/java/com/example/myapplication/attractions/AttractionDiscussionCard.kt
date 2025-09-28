@@ -5,29 +5,21 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.example.myapplication.models.AttractionModel
+import com.example.myapplication.models.DiscussionModel
 
 @Composable
-fun AttractionCard(
-    attraction: AttractionModel,
-    hasMoreButton: Boolean,
-    modifier: Modifier = Modifier,
-    navController: NavController
+fun AttractionDiscussionCard(
+    discussion: DiscussionModel,
+    modifier: Modifier,
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -43,7 +35,7 @@ fun AttractionCard(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            attraction.name?.let {
+            discussion.title?.let {
                 Text(
                     text = it,
                     style = MaterialTheme.typography.headlineSmall,
@@ -51,7 +43,23 @@ fun AttractionCard(
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
-            attraction.type?.let {
+            discussion.contentLike?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
+            discussion.contentDislike?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
+            discussion.content?.let {
                 Text(
                     text = it,
                     style = MaterialTheme.typography.headlineSmall,
@@ -60,19 +68,26 @@ fun AttractionCard(
                 )
             }
             Text(
-                text = attraction.rating.toString(),
+                text = discussion.rating.toString(),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-            if (hasMoreButton) {
-                Button(
-                    onClick = {
-                        navController.navigate("attraction/${attraction.name}")
-                    }
-                ) {
-                    Text(text = "More")
-                }
+            discussion.author?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
+            discussion.createdAt?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
             }
         }
     }
