@@ -48,7 +48,6 @@ fun LoginView(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Login button
         Button(
             onClick = {
                 viewModel.signInUser(login, password) {
@@ -61,7 +60,6 @@ fun LoginView(
             Text(text = if (isLoading) "Logging in..." else "Login")
         }
 
-        // Error message
         if (error != null) {
             Spacer(modifier = Modifier.height(10.dp))
             Text(

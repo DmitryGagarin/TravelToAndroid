@@ -33,7 +33,7 @@ class SignInViewModel : ViewModel() {
                 val form = UserSignInForm(login, password)
                 val response = RetrofitClient.userService.signIn(form)
                 _user.value = response
-                onSuccess()  // Navigate on success
+                onSuccess()
             } catch (e: Exception) {
                 e.printStackTrace()
                 _error.value = "Login failed: ${e.message}"
