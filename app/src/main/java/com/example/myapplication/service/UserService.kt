@@ -5,6 +5,7 @@ import com.example.myapplication.form.UserSignUpFormFirst
 import com.example.myapplication.form.UserSignUpFormSecond
 import com.example.myapplication.models.AuthUser
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface UserService {
@@ -16,6 +17,9 @@ interface UserService {
     suspend fun signUpFirst(@Body signUpFormFirst: UserSignUpFormFirst): AuthUser
 
     @POST("signup/name")
-    suspend fun signUpSecond(@Body signUpFormSecond: UserSignUpFormSecond): AuthUser
+    suspend fun signUpSecond(
+        @Header("Authorization") token: String,
+        @Body signUpFormSecond: UserSignUpFormSecond
+    ): AuthUser
 
 }

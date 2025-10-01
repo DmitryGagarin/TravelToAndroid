@@ -1,10 +1,12 @@
 package com.example.myapplication.views.auth
 
+import android.content.Context.MODE_PRIVATE
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -18,6 +20,8 @@ fun LoginView(
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
 
+    val context = LocalContext.current
+
     var login by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -28,7 +32,6 @@ fun LoginView(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Email/Login field
         TextField(
             value = login,
             onValueChange = { login = it },
@@ -38,7 +41,6 @@ fun LoginView(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Password field
         TextField(
             value = password,
             onValueChange = { password = it },
@@ -50,9 +52,14 @@ fun LoginView(
 
         Button(
             onClick = {
-                viewModel.signInUser(login, password) {
-                    navController.navigate("attractions")
-                }
+                viewModel.signInUser(
+                    login = login,
+                    password = password,
+                    context = context,
+                    onSuccess = {
+                        navController.navigate("attractions")
+                    }
+                )
             },
             enabled = !isLoading,
             modifier = Modifier.fillMaxWidth()

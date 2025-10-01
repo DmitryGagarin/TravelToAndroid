@@ -1,5 +1,8 @@
 package com.example.myapplication.viewModels.user
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.form.UserSignInForm
@@ -23,6 +26,7 @@ class SignInViewModel : ViewModel() {
     fun signInUser(
         login: String,
         password: String,
+        context: Context,
         onSuccess: () -> Unit
     ) {
         _isLoading.value = true
@@ -33,6 +37,7 @@ class SignInViewModel : ViewModel() {
                 val form = UserSignInForm(login, password)
                 val response = RetrofitClient.userService.signIn(form)
                 _user.value = response
+                saveUserToSharedPrefs(context, response)
                 onSuccess()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -40,6 +45,17 @@ class SignInViewModel : ViewModel() {
             } finally {
                 _isLoading.value = false
             }
+        }
+    }
+
+    private fun saveUserToSharedPrefs(context: Context, user: AuthUser) {
+        val sharedPref = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putString("access_token", user.accessToken)
+            putString("user_email", user.email)
+            putString("user_name", user.name)
+            putBoolean("is_logged_in", true)
+            apply()
         }
     }
 }

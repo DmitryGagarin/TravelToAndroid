@@ -2,12 +2,14 @@ package com.example.myapplication.views.auth
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -18,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -30,6 +33,8 @@ fun RegistrationFirstView(
     val viewModel: SignUpViewModel = viewModel()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
+
+    val context = LocalContext.current
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -45,35 +50,46 @@ fun RegistrationFirstView(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextField(
-            value = "",
+            value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
-            modifier = Modifier.fillMaxSize()
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         TextField(
-            value = "",
+            value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
-            modifier = Modifier.fillMaxSize()
         )
-        Checkbox(
-            checked = false,
-            onCheckedChange = { privacyPoliceAgreed = !privacyPoliceAgreed },
-            modifier = Modifier.fillMaxSize(),
-            enabled = false
-        )
-        Checkbox(
-            checked = false,
-            onCheckedChange = { userAgreement = !userAgreement },
-            modifier = Modifier.fillMaxSize(),
-            enabled = false
-        )
-        Checkbox(
-            checked = false,
-            onCheckedChange = { mailingAgreement = !mailingAgreement },
-            modifier = Modifier.fillMaxSize(),
-            enabled = false
-        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row {
+            Checkbox(
+                checked = privacyPoliceAgreed,
+                onCheckedChange = { privacyPoliceAgreed = !privacyPoliceAgreed },
+            )
+            Text(text = "Are you agreed with out privacy policy?")
+        }
+
+        Row {
+            Checkbox(
+                checked = userAgreement,
+                onCheckedChange = { userAgreement = !userAgreement },
+            )
+            Text(text = "Are you agreed with getting advertisements emails?")
+        }
+
+        Row {
+            Checkbox(
+                checked = mailingAgreement,
+                onCheckedChange = { mailingAgreement = !mailingAgreement },
+            )
+            Text(text = "Are you agreed with out user agreement?")
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         Button(
             onClick = {
@@ -82,14 +98,25 @@ fun RegistrationFirstView(
                     password,
                     privacyPoliceAgreed,
                     userAgreement,
-                    mailingAgreement
+                    mailingAgreement,
+                    context
                 ) {
                     navController.navigate("registration_second")
                 }
             }
         ) {
-            Text(text = "Registration")
+            Text(text = if (isLoading) "Registration..." else "Registration")
         }
+
+        if (error != null) {
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(
+                text = error ?: "",
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
         Spacer(modifier = Modifier.height(10.dp))
 
         Button(

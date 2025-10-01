@@ -1,5 +1,6 @@
 package com.example.myapplication.viewModels.user
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.form.UserSignUpFormFirst
@@ -27,6 +28,7 @@ class SignUpViewModel : ViewModel() {
         privacyPoliceAgreed: Boolean,
         userAgreement: Boolean,
         mailingAgreement: Boolean,
+        context: Context,
         onSuccess: () -> Unit
     ) {
         _isLoading.value = true
@@ -43,6 +45,7 @@ class SignUpViewModel : ViewModel() {
                 )
                 val response = RetrofitClient.userService.signUpFirst(form)
                 _user.value = response
+                saveUserToSharedPrefs(context, response)
                 onSuccess()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -56,6 +59,7 @@ class SignUpViewModel : ViewModel() {
     fun signUpUserSecond(
         name: String,
         surname: String,
+        context: Context,
         onSuccess: () -> Unit
     ) {
         _isLoading.value = true
@@ -64,7 +68,7 @@ class SignUpViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val form = UserSignUpFormSecond(name, surname)
-                val response = RetrofitClient.userService.signUpSecond(form)
+                val response = RetrofitClient.userService.signUpSecond(getAccessToken(context), form, )
                 _user.value = response
                 onSuccess()
             } catch (e: Exception) {
@@ -74,5 +78,21 @@ class SignUpViewModel : ViewModel() {
                 _isLoading.value = false
             }
         }
+    }
+
+    private fun saveUserToSharedPrefs(context: Context, user: AuthUser) {
+        val sharedPref = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putString("access_token", user.accessToken)
+            putString("user_email", user.email)
+            putString("user_name", user.name)
+            putBoolean("is_logged_in", true)
+            apply()
+        }
+    }
+
+    private fun getAccessToken(context: Context): String {
+        val sharedPref = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        return sharedPref.getString("access_token", "access_token_not_found").toString()
     }
 }

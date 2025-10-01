@@ -17,8 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.navigation.NavHostContainer
+import com.example.myapplication.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
                 val hideBottomBarRoute = listOf(
-                    "login", "registration", "reset_password"
+                    "login", "registration", "registration_second", "reset_password"
                 )
                 val shouldShowBottomBar = !hideBottomBarRoute.any { route ->
                     currentRoute?.matches(route.toRegex()) == true
