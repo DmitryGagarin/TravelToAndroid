@@ -22,6 +22,12 @@ class SignUpViewModel : ViewModel() {
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> get() = _error.asStateFlow()
 
+    private val _verificationIsLoading = MutableStateFlow(false)
+    val verificationIsLoading: StateFlow<Boolean> get() = _verificationIsLoading.asStateFlow()
+
+    private val _verificationError = MutableStateFlow<String?>(null)
+    val verificationError: StateFlow<String?> get() = _verificationError.asStateFlow()
+
     fun signUpUserFirst(
         email: String,
         password: String,
@@ -68,9 +74,11 @@ class SignUpViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val form = UserSignUpFormSecond(name, surname)
-                val response = RetrofitClient.userService.signUpSecond(getAccessToken(context), form, )
+                val response =
+                    RetrofitClient.userService.signUpSecond(getAccessToken(context), form)
                 _user.value = response
                 onSuccess()
+                saveUserToSharedPrefs(context, response)
             } catch (e: Exception) {
                 e.printStackTrace()
                 _error.value = "Second step of signup failed: ${e.message}"
@@ -80,11 +88,32 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
+    fun sendVerificationEmail(
+        context: Context,
+    ) {
+        _verificationIsLoading.value = true
+        _verificationError.value = null
+
+        viewModelScope.launch {
+            try {
+                RetrofitClient.userService.sendVerificationEmail(
+                    getAccessToken(context),
+                    getEmail(context)
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _verificationError.value = "Sending verification email failed: ${e.message}"
+            } finally {
+                _verificationIsLoading.value = false
+            }
+        }
+    }
+
     private fun saveUserToSharedPrefs(context: Context, user: AuthUser) {
         val sharedPref = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
             putString("access_token", user.accessToken)
-            putString("user_email", user.email)
+            putString("email", user.email)
             putString("user_name", user.name)
             putBoolean("is_logged_in", true)
             apply()
@@ -93,6 +122,12 @@ class SignUpViewModel : ViewModel() {
 
     private fun getAccessToken(context: Context): String {
         val sharedPref = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        return sharedPref.getString("access_token", "access_token_not_found").toString()
+        return "Bearer " + sharedPref.getString("access_token", "access_token_not_found").toString()
+    }
+
+    private fun getEmail(context: Context): String {
+        return context
+            .getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+            .getString("email", "email_not_found").toString()
     }
 }

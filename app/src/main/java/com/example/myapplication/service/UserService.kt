@@ -7,6 +7,7 @@ import com.example.myapplication.models.AuthUser
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface UserService {
 
@@ -21,5 +22,11 @@ interface UserService {
         @Header("Authorization") token: String,
         @Body signUpFormSecond: UserSignUpFormSecond
     ): AuthUser
+
+    @POST("signin/verify-account/{email}")
+    suspend fun sendVerificationEmail(
+        @Header("Authorization") token: String,
+        @Path("email") email: String
+    )
 
 }

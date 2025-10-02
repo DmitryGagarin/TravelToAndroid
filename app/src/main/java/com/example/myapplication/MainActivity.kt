@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
                 val hideBottomBarRoute = listOf(
-                    "login", "registration", "registration_second", "reset_password"
+                    "login", "registration", "registration_second", "account_verification", "reset_password"
                 )
                 val shouldShowBottomBar = !hideBottomBarRoute.any { route ->
                     currentRoute?.matches(route.toRegex()) == true

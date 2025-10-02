@@ -62,7 +62,7 @@ fun RegistrationSecondView(
                     surname,
                     context
                 ) {
-                    navController.navigate("login")
+                    navController.navigate("account_verification")
                 }
             }
         ) {

@@ -20,6 +20,7 @@ import com.example.myapplication.views.attraction.CreateAttractionView
 import com.example.myapplication.views.settings.EditAccountView
 import com.example.myapplication.views.admin.ModerationView
 import com.example.myapplication.views.RateScreen
+import com.example.myapplication.views.auth.AccountVerificationView
 import com.example.myapplication.views.auth.RegistrationSecondView
 
 @Composable
@@ -41,6 +42,9 @@ fun NavHostContainer(
             }
             composable("registration_second") {
                 RegistrationSecondView(navController = navController)
+            }
+            composable("account_verification") {
+                AccountVerificationView(navController = navController)
             }
             composable("reset_password") {
                 ResetPasswordView(navController = navController)
