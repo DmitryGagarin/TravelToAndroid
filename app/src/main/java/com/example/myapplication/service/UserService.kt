@@ -4,7 +4,9 @@ import com.example.myapplication.form.UserSignInForm
 import com.example.myapplication.form.UserSignUpFormFirst
 import com.example.myapplication.form.UserSignUpFormSecond
 import com.example.myapplication.models.AuthUser
+import com.example.myapplication.models.UserModel
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -29,4 +31,8 @@ interface UserService {
         @Path("email") email: String
     )
 
+    @GET("user/get")
+    suspend fun getUser(
+        @Header("Authorization") token: String
+    ): UserModel
 }

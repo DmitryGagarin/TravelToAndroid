@@ -7,6 +7,7 @@ import com.example.myapplication.form.UserSignUpFormFirst
 import com.example.myapplication.form.UserSignUpFormSecond
 import com.example.myapplication.models.AuthUser
 import com.example.myapplication.utils.RetrofitClient
+import com.example.myapplication.utils.getAccessToken
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -118,11 +119,6 @@ class SignUpViewModel : ViewModel() {
             putBoolean("is_logged_in", true)
             apply()
         }
-    }
-
-    private fun getAccessToken(context: Context): String {
-        val sharedPref = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        return "Bearer " + sharedPref.getString("access_token", "access_token_not_found").toString()
     }
 
     private fun getEmail(context: Context): String {
