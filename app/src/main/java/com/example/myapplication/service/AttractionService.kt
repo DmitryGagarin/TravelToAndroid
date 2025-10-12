@@ -5,6 +5,7 @@ import com.example.myapplication.models.PagedAttractionResponse
 import com.example.myapplication.models.AttractionModel
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -14,7 +15,10 @@ interface AttractionService {
     suspend fun getPublishedAttractions(): PagedAttractionResponse
 
     @GET("attraction/{name}")
-    suspend fun getAttractionByName(@Path("name") name: String): AttractionModel
+    suspend fun getAttractionByName(
+        @Header("Authorization") token: String,
+        @Path("name") name: String
+    ): AttractionModel
 
     @GET("attraction/search/{type}/name")
     suspend fun getAttractionBySearchByTypeAndName(@Path("type") type: String): AttractionModel

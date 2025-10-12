@@ -8,6 +8,7 @@ import com.example.myapplication.form.UserSignUpFormSecond
 import com.example.myapplication.models.AuthUser
 import com.example.myapplication.utils.RetrofitClient
 import com.example.myapplication.utils.getAccessToken
+import com.example.myapplication.utils.saveUserToSharedPrefs
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -107,17 +108,6 @@ class SignUpViewModel : ViewModel() {
             } finally {
                 _verificationIsLoading.value = false
             }
-        }
-    }
-
-    private fun saveUserToSharedPrefs(context: Context, user: AuthUser) {
-        val sharedPref = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            putString("access_token", user.accessToken)
-            putString("email", user.email)
-            putString("user_name", user.name)
-            putBoolean("is_logged_in", true)
-            apply()
         }
     }
 

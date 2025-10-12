@@ -28,6 +28,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -55,8 +56,10 @@ fun AttractionView(
     val isLoadingDiscussions by viewModel.isLoadingDiscussions.collectAsState()
     val errorDiscussions by viewModel.errorDiscussions.collectAsState()
 
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
-        viewModel.loadAttractionData()
+        viewModel.loadAttractionData(context)
     }
 
     Scaffold(
@@ -106,7 +109,7 @@ fun AttractionView(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(
-                            onClick = { viewModel.refreshAttractionAndDiscussions() }
+                            onClick = { viewModel.refreshAttractionAndDiscussions(context) }
                         ) {
                             Text("Try Again")
                         }
@@ -167,7 +170,7 @@ fun AttractionView(
                                     )
                                     Spacer(modifier = Modifier.height(16.dp))
                                     Button(
-                                        onClick = { viewModel.refreshAttractionAndDiscussions() }
+                                        onClick = { viewModel.refreshAttractionAndDiscussions(context) }
                                     ) {
                                         Text("Try Again")
                                     }

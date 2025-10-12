@@ -1,10 +1,12 @@
 package com.example.myapplication.viewModels.attraction
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.models.AttractionModel
 import com.example.myapplication.models.DiscussionModel
 import com.example.myapplication.utils.RetrofitClient
+import com.example.myapplication.utils.getAccessToken
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,22 +34,23 @@ class AttractionViewModel(
     private val _errorDiscussions = MutableStateFlow<String?>(null)
     val errorDiscussions: StateFlow<String?> get() = _errorDiscussions.asStateFlow()
 
-    init {
-        loadAttractionData()
-    }
-
-    internal fun loadAttractionData() {
-        loadAttractionByName()
+    internal fun loadAttractionData(context: Context) {
+        loadAttractionByName(context)
         loadDiscussionsForAttraction()
     }
 
-    private fun loadAttractionByName() {
+    private fun loadAttractionByName(
+        context: Context
+    ) {
         _isLoadingAttraction.value = true
         _errorAttraction.value = null
 
         viewModelScope.launch {
             try {
-                val response = RetrofitClient.attractionService.getAttractionByName(attractionName)
+                val response = RetrofitClient.attractionService.getAttractionByName(
+                    getAccessToken(context),
+                    attractionName
+                )
                 _attraction.value = response
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -92,10 +95,10 @@ class AttractionViewModel(
         }
     }
 
-    fun refreshAttractionAndDiscussions() {
+    fun refreshAttractionAndDiscussions(context: Context) {
         _attraction.value = null
         _discussions.value = emptyList()
-        loadAttractionData()
+        loadAttractionData(context)
     }
 
 }

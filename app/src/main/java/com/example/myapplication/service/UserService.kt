@@ -1,5 +1,6 @@
 package com.example.myapplication.service
 
+import com.example.myapplication.form.UserProfileForm
 import com.example.myapplication.form.UserSignInForm
 import com.example.myapplication.form.UserSignUpFormFirst
 import com.example.myapplication.form.UserSignUpFormSecond
@@ -35,4 +36,10 @@ interface UserService {
     suspend fun getUser(
         @Header("Authorization") token: String
     ): UserModel
+
+    @POST("setting/save-changes")
+    suspend fun saveUserChanges(
+        @Header("Authorization") token: String,
+        @Body form: UserProfileForm
+    ): AuthUser
 }

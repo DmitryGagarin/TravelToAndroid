@@ -22,8 +22,8 @@ fun LoginView(
 
     val context = LocalContext.current
 
-    var login by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var login by remember { mutableStateOf("admin@travel.com") }
+    var password by remember { mutableStateOf("password") }
 
     Column(
         modifier = Modifier
@@ -34,6 +34,7 @@ fun LoginView(
     ) {
         TextField(
             value = login,
+//            value = "admin@travel.com",
             onValueChange = { login = it },
             label = { Text("Login") },
             modifier = Modifier.fillMaxWidth()
@@ -43,6 +44,7 @@ fun LoginView(
 
         TextField(
             value = password,
+//            value = "password",
             onValueChange = { password = it },
             label = { Text("Password") },
             modifier = Modifier.fillMaxWidth()

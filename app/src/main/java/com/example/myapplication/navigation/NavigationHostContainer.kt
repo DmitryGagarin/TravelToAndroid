@@ -74,6 +74,7 @@ fun NavHostContainer(
             }
             composable("edit_account") {
                 EditAccountView(
+                    navController = navController,
                     onBackClick = { navController.popBackStack() },
                 )
             }

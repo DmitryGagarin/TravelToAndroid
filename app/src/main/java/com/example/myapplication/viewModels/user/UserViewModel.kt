@@ -3,9 +3,11 @@ package com.example.myapplication.viewModels.user
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.form.UserProfileForm
 import com.example.myapplication.models.UserModel
 import com.example.myapplication.utils.RetrofitClient
 import com.example.myapplication.utils.getAccessToken
+import com.example.myapplication.utils.saveUserToSharedPrefs
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -45,5 +47,35 @@ class UserViewModel : ViewModel() {
     fun refreshUser(context: Context) {
         _user.value = null
         getUser(context = context)
+    }
+
+    fun editUserData(
+        context: Context,
+        name: String?,
+        surname: String?,
+        email: String?,
+        phone: String?,
+        onSuccess: () -> Unit
+    ) {
+        _isLoading.value = true
+        _error.value = null
+        viewModelScope.launch {
+            try {
+                val form = UserProfileForm(
+                    name = name,
+                    surname = surname,
+                    email = email,
+                    phone = phone
+                )
+                val response = RetrofitClient.userService.saveUserChanges(getAccessToken(context), form)
+                onSuccess()
+                saveUserToSharedPrefs(context, response)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _error.value = "Impossible to do changes in profile data"
+            } finally {
+                _isLoading.value = false
+            }
+        }
     }
 }

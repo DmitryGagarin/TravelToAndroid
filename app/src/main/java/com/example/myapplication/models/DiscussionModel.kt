@@ -8,6 +8,6 @@ data class DiscussionModel (
     val rating: Double?,
     val author: String?,
     val createdAt: String?,
-    val images: List<ByteArray>?,
+    val images: List<String>?,
     val imageFormats: List<String>?
 )
