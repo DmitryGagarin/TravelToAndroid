@@ -1,8 +1,6 @@
 package com.example.myapplication.viewModels.user
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.form.UserSignInForm
