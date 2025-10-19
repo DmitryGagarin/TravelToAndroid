@@ -1,5 +1,7 @@
 package com.example.myapplication.models
 
+import com.google.gson.annotations.SerializedName
+
 data class AttractionModel(
     val uuid: String?,
     val name: String?,
@@ -10,6 +12,7 @@ data class AttractionModel(
     val phone: String?,
     val website: String?,
     val type: String?,
+    @SerializedName("isRoundTheClock")
     val isRoundTheClock: Boolean?,
     val openTime: String?,
     val closeTime: String?,

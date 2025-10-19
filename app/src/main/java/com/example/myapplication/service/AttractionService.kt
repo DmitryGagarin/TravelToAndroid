@@ -40,4 +40,10 @@ interface AttractionService {
 
     @POST("attraction/edit/{currentAttractionName}")
     suspend fun postEditAttraction(@Path("currentAttractionName") currentAttractionName: String): String
+
+    @POST("like/add/{attractionName}")
+    suspend fun likeAttraction(
+        @Header("Authorization") token: String,
+        @Path("attractionName") attractionName: String,
+    )
 }

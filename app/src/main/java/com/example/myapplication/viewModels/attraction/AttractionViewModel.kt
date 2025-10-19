@@ -34,6 +34,13 @@ class AttractionViewModel(
     private val _errorDiscussions = MutableStateFlow<String?>(null)
     val errorDiscussions: StateFlow<String?> get() = _errorDiscussions.asStateFlow()
 
+    private val _isLoadingLike = MutableStateFlow(false)
+    val isLoadingLike: StateFlow<Boolean> get() = _isLoadingAttraction.asStateFlow()
+
+    private val _errorLike = MutableStateFlow<String?>(null)
+    val errorLike: StateFlow<String?> get() = _errorLike.asStateFlow()
+
+
     internal fun loadAttractionData(context: Context) {
         loadAttractionByName(context)
         loadDiscussionsForAttraction()
@@ -91,6 +98,32 @@ class AttractionViewModel(
                 _discussions.value = emptyList()
             } finally {
                 _isLoadingDiscussions.value = false
+            }
+        }
+    }
+
+    fun likeAttraction(
+        context: Context
+    ) {
+        _isLoadingLike.value = true
+        _errorLike.value = null
+        viewModelScope.launch {
+            try {
+                RetrofitClient.attractionService.likeAttraction(
+                    getAccessToken(context),
+                    attractionName
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+
+                _errorLike.value = when {
+                    e.message?.contains("EPERM") == true -> "Network permission denied. Check internet permissions."
+                    e.message?.contains("failed to connect") == true -> "Cannot connect to server. Check URL and server status."
+                    e.message?.contains("timeout") == true -> "Connection timeout. Server might be down."
+                    else -> "Failed to load attractions: ${e.message}"
+                }
+            } finally {
+                _isLoadingLike.value = false
             }
         }
     }

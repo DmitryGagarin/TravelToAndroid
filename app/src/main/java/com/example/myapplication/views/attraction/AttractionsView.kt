@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.myapplication.attractions.AttractionCard
+import com.example.myapplication.attractions.PreviewAttractionCard
 import com.example.myapplication.viewModels.attraction.AttractionsViewModel
 
 @Composable
@@ -93,11 +93,11 @@ fun AttractionsView(navController: NavController) {
                     items = attractions,
                     key = { attraction -> attraction.name!! }
                 ) { attraction ->
-                    AttractionCard(
+                    PreviewAttractionCard(
                         attraction = attraction,
                         hasMoreButton = true,
                         modifier = Modifier.fillMaxWidth(),
-                        navController = navController,
+                        navController = navController
                     )
                 }
             }

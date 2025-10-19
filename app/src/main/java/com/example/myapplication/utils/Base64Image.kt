@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 
 @Composable
 fun Base64Image(
@@ -22,7 +23,8 @@ fun Base64Image(
         Image(
             bitmap = bitmap,
             contentDescription = contentDescription,
-            modifier = modifier
+            modifier = modifier,
+            contentScale = ContentScale.Crop
         )
     }
 }
