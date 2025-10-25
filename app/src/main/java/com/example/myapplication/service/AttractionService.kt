@@ -1,8 +1,8 @@
 package com.example.myapplication.service
 
 import com.example.myapplication.attractions.AttractionCreateForm
-import com.example.myapplication.models.PagedAttractionResponse
 import com.example.myapplication.models.AttractionModel
+import com.example.myapplication.models.PagedAttractionResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -33,7 +33,10 @@ interface AttractionService {
     suspend fun getMyAttraction(): List<AttractionModel>
 
     @POST("attraction/register-business")
-    suspend fun postCreateAttraction(@Body attraction: AttractionCreateForm): AttractionCreateForm
+    suspend fun createAttraction(
+        @Header("Authorization") token: String,
+        @Body attraction: AttractionCreateForm,
+    ): AttractionModel
 
     @POST("attraction/delete/{name}")
     suspend fun postDeleteAttraction(@Path("name") name: String): AttractionModel
