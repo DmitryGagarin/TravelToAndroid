@@ -1,8 +1,12 @@
 package com.example.myapplication.service
 
 import com.example.myapplication.attractions.AttractionCreateForm
+import com.example.myapplication.form.ParkFacilityCreateForm
 import com.example.myapplication.models.AttractionModel
 import com.example.myapplication.models.PagedAttractionResponse
+import com.example.myapplication.views.attraction.features.models.ParkFacilityModel
+import com.example.myapplication.views.attraction.features.models.PosterModel
+import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -20,33 +24,29 @@ interface AttractionService {
         @Path("name") name: String
     ): AttractionModel
 
-    @GET("attraction/search/{type}/name")
-    suspend fun getAttractionBySearchByTypeAndName(@Path("type") type: String): AttractionModel
-
-    @GET("attraction/search/name")
-    suspend fun getAttractionBySearchByName(): AttractionModel
-
-    @GET("attraction/{type}/address")
-    suspend fun getAttractionByTypeAndAddress(@Path("type") type: String): AttractionModel
-
-    @GET("attraction/my")
-    suspend fun getMyAttraction(): List<AttractionModel>
-
     @POST("attraction/register-business")
     suspend fun createAttraction(
         @Header("Authorization") token: String,
         @Body attraction: AttractionCreateForm,
     ): AttractionModel
 
-    @POST("attraction/delete/{name}")
-    suspend fun postDeleteAttraction(@Path("name") name: String): AttractionModel
-
-    @POST("attraction/edit/{currentAttractionName}")
-    suspend fun postEditAttraction(@Path("currentAttractionName") currentAttractionName: String): String
-
     @POST("like/add/{attractionName}")
     suspend fun likeAttraction(
         @Header("Authorization") token: String,
         @Path("attractionName") attractionName: String,
     )
+
+    @POST("attraction-feature/{attractionName}/create-park-facility")
+    suspend fun saveParkFacilities(
+        @Header("Authorization") token: String,
+        @Path("attractionName") attractionName: String,
+        @Body attraction: ParkFacilityCreateForm,
+    ): List<ParkFacilityModel>
+
+    @POST("attraction-feature/{attractionName}/create-poster")
+    suspend fun savePosters(
+        @Header("Authorization") token: String,
+        @Path("attractionName") attractionName: String,
+        @Body posters: List<MultipartBody.Part>
+    ): List<PosterModel>
 }

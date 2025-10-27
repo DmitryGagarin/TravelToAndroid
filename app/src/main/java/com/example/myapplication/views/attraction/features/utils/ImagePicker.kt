@@ -1,5 +1,6 @@
 package com.example.myapplication.views.attraction.features.utils
 
+import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,15 +24,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 @Composable
-fun ImagePicker() {
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
+fun ImagePicker(
+    onImagesSelected: (List<Uri>) -> Unit
+) {
+    // State for selected images
+    var imageUris by remember { mutableStateOf<List<Uri>>(emptyList()) }
 
-    // Launcher for picking image
+    // Launcher for picking multiple images
     val imagePickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri: Uri? -> imageUri = uri }
+        contract = ActivityResultContracts.GetMultipleContents(),
+        onResult = { uris: List<Uri> ->
+            imageUris = uris
+            onImagesSelected(uris)
+        }
     )
 
     Column(
@@ -41,17 +51,14 @@ fun ImagePicker() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = {
-            // Launch image picker (only allow images)
-            imagePickerLauncher.launch("image/*")
-        }) {
-            Text(text = "Pick Image")
+        Button(onClick = { imagePickerLauncher.launch("image/*") }) {
+            Text("Pick Images")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        imageUri?.let { uri ->
-            // Display the selected image using Coil
+        // Display all selected images
+        imageUris.forEach { uri ->
             Image(
                 painter = rememberAsyncImagePainter(uri),
                 contentDescription = "Selected Image",
@@ -61,5 +68,21 @@ fun ImagePicker() {
                 contentScale = ContentScale.Crop
             )
         }
+    }
+}
+
+/**
+ * Converts a list of Uri to a list of MultipartBody.Part suitable for Retrofit upload
+ */
+fun urisToMultipartParts(
+    context: Context,
+    uris: List<Uri>,
+    partName: String = "images"
+): List<MultipartBody.Part> {
+    return uris.map { uri ->
+        val bytes = context.contentResolver.openInputStream(uri)?.readBytes() ?: byteArrayOf()
+        val requestBody = RequestBody.create("image/*".toMediaTypeOrNull(), bytes)
+        val fileName = "upload_${System.currentTimeMillis()}.jpg"
+        MultipartBody.Part.createFormData(partName, fileName, requestBody)
     }
 }

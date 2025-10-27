@@ -14,13 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.myapplication.views.attraction.features.models.ParkFacility
+import com.example.myapplication.views.attraction.features.models.ParkFacilityModel
 
 
 @Composable
 fun FacilityCard(
-    facility: ParkFacility,
-    onUpdate: (ParkFacility) -> Unit
+    facility: ParkFacilityModel,
+    onUpdate: (ParkFacilityModel) -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),

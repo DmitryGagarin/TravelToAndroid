@@ -41,8 +41,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.utils.Chip
 import com.example.myapplication.viewModels.attraction.AttractionCreateViewModel
 import com.example.myapplication.views.attraction.features.AttractionFeaturesView
+import com.example.myapplication.views.attraction.features.models.ParkFacilityModel
+import okhttp3.MultipartBody
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MutableCollectionMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateAttractionView(onBackClick: () -> Unit) {
@@ -66,6 +68,9 @@ fun CreateAttractionView(onBackClick: () -> Unit) {
     var isRoundTheClock by remember { mutableStateOf(false) }
     var openTime by remember { mutableStateOf("") }
     var closeTime by remember { mutableStateOf("") }
+
+    val parkFacilities by remember { mutableStateOf(mutableListOf<ParkFacilityModel>()) }
+    val posters by remember { mutableStateOf(mutableListOf<MultipartBody.Part>()) }
 
     Scaffold(
         topBar = {
@@ -250,7 +255,7 @@ fun CreateAttractionView(onBackClick: () -> Unit) {
                         Spacer(modifier = Modifier.height(8.dp))
                     }
 
-                    attractionType?.let { AttractionFeaturesView(it) }
+                    attractionType?.let { AttractionFeaturesView(it, context) }
 
                     Button(
                         onClick = {
@@ -265,7 +270,9 @@ fun CreateAttractionView(onBackClick: () -> Unit) {
                                 attractionType!!,
                                 isRoundTheClock,
                                 openTime,
-                                closeTime
+                                closeTime,
+                                parkFacilities,
+                                posters
                             )
                         }
                     ) {

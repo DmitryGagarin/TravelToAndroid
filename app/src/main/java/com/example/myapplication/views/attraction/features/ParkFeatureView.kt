@@ -14,11 +14,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.myapplication.views.attraction.features.models.ParkFacility
+import com.example.myapplication.views.attraction.features.models.ParkFacilityModel
 
 @Composable
 fun ParkFeatureView() {
-    val facilities = remember { mutableStateListOf(ParkFacility()) } // start with one facility
+    val facilities = remember { mutableStateListOf(ParkFacilityModel()) } // start with one facility
 
     Column(
         modifier = Modifier
@@ -38,7 +38,7 @@ fun ParkFeatureView() {
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        Button(onClick = { facilities.add(ParkFacility()) }) {
+        Button(onClick = { facilities.add(ParkFacilityModel()) }) {
             Text(text = "Add Facility")
         }
     }
