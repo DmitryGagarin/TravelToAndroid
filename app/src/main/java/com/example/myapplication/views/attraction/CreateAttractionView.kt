@@ -4,11 +4,16 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -34,7 +39,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.utils.Chip
-import com.example.myapplication.viewModels.attraction.CreateAttractionViewModel
+import com.example.myapplication.viewModels.attraction.AttractionCreateViewModel
+import com.example.myapplication.views.attraction.features.AttractionFeaturesView
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +49,7 @@ fun CreateAttractionView(onBackClick: () -> Unit) {
 
     val context = LocalContext.current
 
-    val viewModel: CreateAttractionViewModel = viewModel()
+    val viewModel: AttractionCreateViewModel = viewModel()
 
     val isLoadingAttraction by viewModel.isLoadingAttraction.collectAsState()
     val errorAttraction by viewModel.errorAttraction.collectAsState()
@@ -56,7 +62,7 @@ fun CreateAttractionView(onBackClick: () -> Unit) {
     var household by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
     var website by remember { mutableStateOf("") }
-    var attractionType by remember { mutableStateOf("") }
+    var attractionType by remember { mutableStateOf<String?>(null) }
     var isRoundTheClock by remember { mutableStateOf(false) }
     var openTime by remember { mutableStateOf("") }
     var closeTime by remember { mutableStateOf("") }
@@ -97,7 +103,7 @@ fun CreateAttractionView(onBackClick: () -> Unit) {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Error loading attraction",
+                            text = "Error creating attraction",
                             style = MaterialTheme.typography.headlineSmall,
                             color = MaterialTheme.colorScheme.error
                         )
@@ -118,8 +124,9 @@ fun CreateAttractionView(onBackClick: () -> Unit) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.Center,
+                    verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     TextField(
@@ -186,16 +193,26 @@ fun CreateAttractionView(onBackClick: () -> Unit) {
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    val attractionTypes = listOf("Museum", "Gallery", "Park", "Religious", "Cafe", "Restaurant", "Theater", "Hotel")
+                    val attractionTypes = listOf(
+                        "Museum",
+                        "Gallery",
+                        "Park",
+                        "Religious",
+                        "Cafe",
+                        "Restaurant",
+                        "Theater",
+                        "Hotel"
+                    )
 
-                    Row {
-                        attractionTypes.forEach { type ->
+                    LazyRow(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        contentPadding = PaddingValues(horizontal = 8.dp)
+                    ) {
+                        items(attractionTypes) { type ->
                             Chip(
                                 label = type,
                                 isSelected = attractionType == type,
-                                onClick = {
-                                    attractionType = type // Use the captured 'type' from forEach
-                                },
+                                onClick = { attractionType = type },
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                         }
@@ -203,28 +220,37 @@ fun CreateAttractionView(onBackClick: () -> Unit) {
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    Checkbox(
-                        checked = isRoundTheClock,
-                        onCheckedChange = { isRoundTheClock = !isRoundTheClock },
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(
+                            checked = isRoundTheClock,
+                            onCheckedChange = { isRoundTheClock = !isRoundTheClock },
+                        )
+                        Text(text = "Is your attraction works around the clock?")
+                    }
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    TextField(
-                        value = openTime,
-                        onValueChange = { openTime = it },
-                        label = { Text("Open time") },
-                    )
+                    if (!isRoundTheClock) {
+                        TextField(
+                            value = openTime,
+                            onValueChange = { openTime = it },
+                            label = { Text("Open time") },
+                        )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
 
-                    TextField(
-                        value = closeTime,
-                        onValueChange = { closeTime = it },
-                        label = { Text("Close time") },
-                    )
+                        TextField(
+                            value = closeTime,
+                            onValueChange = { closeTime = it },
+                            label = { Text("Close time") },
+                        )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+
+                    attractionType?.let { AttractionFeaturesView(it) }
 
                     Button(
                         onClick = {
@@ -236,7 +262,7 @@ fun CreateAttractionView(onBackClick: () -> Unit) {
                                 "$city, $street, $household",
                                 phone,
                                 website,
-                                attractionType,
+                                attractionType!!,
                                 isRoundTheClock,
                                 openTime,
                                 closeTime

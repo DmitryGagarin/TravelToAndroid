@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class CreateAttractionViewModel : ViewModel() {
+class AttractionCreateViewModel : ViewModel() {
 
     private val _isLoadingAttraction = MutableStateFlow(false)
     val isLoadingAttraction: StateFlow<Boolean> get() = _isLoadingAttraction.asStateFlow()
@@ -54,11 +54,13 @@ class CreateAttractionViewModel : ViewModel() {
                 context,
                 attractionCreateForm
             )
+            var success = false
             try {
                 RetrofitClient.attractionService.createAttraction(
                     getAccessToken(context),
                     attractionCreateForm
                 )
+                success = true
             } catch (e: Exception) {
                 e.printStackTrace()
 
@@ -71,6 +73,28 @@ class CreateAttractionViewModel : ViewModel() {
             } finally {
                 _isLoadingAttraction.value = false
             }
+
+            if (success) {
+                deleteFromCache(context)
+            }
+        }
+    }
+
+    private fun deleteFromCache(context: Context) {
+        val sharedPref = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            remove("ownerTelegram")
+            remove("attractionName")
+            remove("description")
+            remove("address")
+            remove("phone")
+            remove("website")
+            remove("attractionType")
+            remove("isRoundTheClock")
+            remove("openTime")
+            remove("closeTime")
+
+            apply()
         }
     }
 
