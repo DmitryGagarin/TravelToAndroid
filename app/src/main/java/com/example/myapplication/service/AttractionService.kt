@@ -1,16 +1,17 @@
 package com.example.myapplication.service
 
-import com.example.myapplication.attractions.AttractionCreateForm
-import com.example.myapplication.form.ParkFacilityCreateForm
 import com.example.myapplication.models.AttractionModel
 import com.example.myapplication.models.PagedAttractionResponse
 import com.example.myapplication.views.attraction.features.models.ParkFacilityModel
 import com.example.myapplication.views.attraction.features.models.PosterModel
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface AttractionService {
@@ -24,10 +25,12 @@ interface AttractionService {
         @Path("name") name: String
     ): AttractionModel
 
+    @Multipart
     @POST("attraction/register-business")
     suspend fun createAttraction(
         @Header("Authorization") token: String,
-        @Body attraction: AttractionCreateForm,
+        @Part("attractionCreateForm") attraction: RequestBody,
+        @Part images: List<MultipartBody.Part>
     ): AttractionModel
 
     @POST("like/add/{attractionName}")
@@ -36,11 +39,13 @@ interface AttractionService {
         @Path("attractionName") attractionName: String,
     )
 
+    @Multipart
     @POST("attraction-feature/{attractionName}/create-park-facility")
     suspend fun saveParkFacilities(
         @Header("Authorization") token: String,
         @Path("attractionName") attractionName: String,
-        @Body attraction: ParkFacilityCreateForm,
+        @Part("parkFacilityCreateForm") facilities: RequestBody,
+        @Part images: List<MultipartBody.Part>
     ): List<ParkFacilityModel>
 
     @POST("attraction-feature/{attractionName}/create-poster")

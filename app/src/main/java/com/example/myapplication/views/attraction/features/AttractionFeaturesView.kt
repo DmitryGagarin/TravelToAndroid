@@ -2,13 +2,18 @@ package com.example.myapplication.views.attraction.features
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import com.example.myapplication.views.attraction.features.models.ParkFacilityModel
 
 @Composable
-fun AttractionFeaturesView(attractionType: String, context: Context) {
+fun AttractionFeaturesView(
+    attractionType: String,
+    context: Context,
+    parkFacilities: MutableList<ParkFacilityModel>
+) {
     when (attractionType) {
         "Museum" -> MuseumFeatureView(context)
         "Gallery" -> GalleryFeatureView(context)
-        "Park" -> ParkFeatureView()
+        "Park" -> ParkFeatureView(parkFacilities)
         "Religious" -> ReligiousFeatureView()
         "Cafe" -> CafeFeatureView() // TODO
         "Restaurant" -> RestaurantFeatureView() // TODO

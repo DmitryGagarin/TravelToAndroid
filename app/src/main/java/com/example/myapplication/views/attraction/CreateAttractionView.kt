@@ -30,6 +30,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,6 +43,8 @@ import com.example.myapplication.utils.Chip
 import com.example.myapplication.viewModels.attraction.AttractionCreateViewModel
 import com.example.myapplication.views.attraction.features.AttractionFeaturesView
 import com.example.myapplication.views.attraction.features.models.ParkFacilityModel
+import com.example.myapplication.views.attraction.features.utils.ImagePicker
+import com.example.myapplication.views.attraction.features.utils.urisToMultipartParts
 import okhttp3.MultipartBody
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MutableCollectionMutableState")
@@ -68,8 +71,10 @@ fun CreateAttractionView(onBackClick: () -> Unit) {
     var isRoundTheClock by remember { mutableStateOf(false) }
     var openTime by remember { mutableStateOf("") }
     var closeTime by remember { mutableStateOf("") }
+    var attractionImages by remember { mutableStateOf<List<MultipartBody.Part>>(emptyList()) }
 
-    val parkFacilities by remember { mutableStateOf(mutableListOf<ParkFacilityModel>()) }
+    val parkFacilities = remember { mutableStateListOf<ParkFacilityModel>() }
+
     val posters by remember { mutableStateOf(mutableListOf<MultipartBody.Part>()) }
 
     Scaffold(
@@ -255,24 +260,30 @@ fun CreateAttractionView(onBackClick: () -> Unit) {
                         Spacer(modifier = Modifier.height(8.dp))
                     }
 
-                    attractionType?.let { AttractionFeaturesView(it, context) }
+                    ImagePicker { uris ->
+                        // convert URIs to MultipartBody.Part for upload
+                        attractionImages = urisToMultipartParts(context, uris)
+                    }
+
+                    attractionType?.let { AttractionFeaturesView(it, context, parkFacilities) }
 
                     Button(
                         onClick = {
                             viewModel.createAttraction(
-                                context,
-                                ownerTelegram,
-                                attractionName,
-                                description,
-                                "$city, $street, $household",
-                                phone,
-                                website,
-                                attractionType!!,
-                                isRoundTheClock,
-                                openTime,
-                                closeTime,
-                                parkFacilities,
-                                posters
+                                context = context,
+                                ownerTelegram = ownerTelegram,
+                                attractionName = attractionName,
+                                description = description,
+                                address = "$city, $street, $household",
+                                phone = phone,
+                                website = website,
+                                attractionType = attractionType!!,
+                                isRoundTheClock = isRoundTheClock,
+                                openTime = openTime,
+                                closeTime = closeTime,
+                                attractionImages = attractionImages,
+                                parkFacilities = parkFacilities, // This now contains facilities with image URIs
+                                posters = posters
                             )
                         }
                     ) {

@@ -11,17 +11,23 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.views.attraction.features.models.ParkFacilityModel
-
+import com.example.myapplication.views.attraction.features.utils.ImagePicker
 
 @Composable
-fun FacilityCard(
+fun ParkFacilityCard(
     facility: ParkFacilityModel,
     onUpdate: (ParkFacilityModel) -> Unit
 ) {
+    var isRoundTheClock by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -31,14 +37,14 @@ fun FacilityCard(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             TextField(
-                value = facility.name,
+                value = facility.name ?: "",
                 onValueChange = { onUpdate(facility.copy(name = it)) },
                 label = { Text("Facility name") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             TextField(
-                value = facility.description,
+                value = facility.description ?: "",
                 onValueChange = { onUpdate(facility.copy(description = it)) },
                 label = { Text("Facility description") },
                 modifier = Modifier.fillMaxWidth()
@@ -50,30 +56,46 @@ fun FacilityCard(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Checkbox(
-                    checked = facility.isRoundTheClock,
-                    onCheckedChange = { onUpdate(facility.copy(isRoundTheClock = it)) }
+                    checked = isRoundTheClock,
+                    onCheckedChange = {
+                        isRoundTheClock = !isRoundTheClock
+                        if (isRoundTheClock) {
+                            onUpdate(facility.copy(openTime = null, closeTime = null))
+                        }
+                    }
                 )
                 Text(text = "Works around the clock?")
             }
 
-            if (!facility.isRoundTheClock) {
+            if (!isRoundTheClock) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     TextField(
-                        value = facility.openTime,
+                        value = facility.openTime ?: "",
                         onValueChange = { onUpdate(facility.copy(openTime = it)) },
                         label = { Text("Open time") },
                         modifier = Modifier.weight(1f)
                     )
+
                     TextField(
-                        value = facility.closeTime,
+                        value = facility.closeTime ?: "",
                         onValueChange = { onUpdate(facility.copy(closeTime = it)) },
                         label = { Text("Close time") },
                         modifier = Modifier.weight(1f)
                     )
                 }
+            }
+
+            // Image picker that updates the facility with selected URIs
+            ImagePicker { uris ->
+                onUpdate(facility.copy(imageUris = uris))
+            }
+
+            // Show selected image count
+            if (facility.imageUris.isNotEmpty()) {
+                Text("Selected images: ${facility.imageUris.size}")
             }
         }
     }
