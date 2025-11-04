@@ -1,0 +1,34 @@
+package com.example.traveltoandroid.views.auth
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.traveltoandroid.R
+
+@Composable
+fun ResetPasswordView(
+    navController: NavController
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TextField(value = "", onValueChange = {}, label = { Text(stringResource(R.string.email)) })
+        Button(
+            onClick = { navController.navigate("Login") }
+        ) { Text(text = stringResource(R.string.reset_password)) }
+    }
+}
