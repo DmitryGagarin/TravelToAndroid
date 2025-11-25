@@ -9,21 +9,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class AttractionsViewModel : ViewModel() {
+class AttractionsViewModel : ViewModel(), IAttractionsViewModel {
     private val _attractions = MutableStateFlow<List<AttractionModel>>(emptyList())
-    val attractions: StateFlow<List<AttractionModel>> get() = _attractions.asStateFlow()
+    override val attractions: StateFlow<List<AttractionModel>> get() = _attractions.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> get() = _isLoading.asStateFlow()
+    override val isLoading: StateFlow<Boolean> get() = _isLoading.asStateFlow()
 
     private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> get() = _error.asStateFlow()
+    override val error: StateFlow<String?> get() = _error.asStateFlow()
 
     init {
         loadPublishedAttractions()
     }
 
-    fun loadPublishedAttractions() {
+    override fun loadPublishedAttractions() {
         _isLoading.value = true
         _error.value = null
 
@@ -48,7 +48,7 @@ class AttractionsViewModel : ViewModel() {
         }
     }
 
-    fun refreshAttractions() {
+    override fun refreshAttractions() {
         _attractions.value = emptyList()
         loadPublishedAttractions()
     }

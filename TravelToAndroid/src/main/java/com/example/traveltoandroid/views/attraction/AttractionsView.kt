@@ -20,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -27,10 +28,14 @@ import androidx.navigation.NavController
 import com.example.traveltoandroid.R
 import com.example.traveltoandroid.attractions.PreviewAttractionCard
 import com.example.traveltoandroid.viewModels.attraction.AttractionsViewModel
+import com.example.traveltoandroid.viewModels.attraction.IAttractionsViewModel
 
 @Composable
-fun AttractionsView(navController: NavController) {
-    val viewModel: AttractionsViewModel = viewModel()
+fun AttractionsView(
+    navController: NavController,
+    viewModel: IAttractionsViewModel = viewModel<AttractionsViewModel>()
+) {
+//    val viewModel: AttractionsViewModel = viewModel()
     val attractions by viewModel.attractions.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
@@ -40,18 +45,24 @@ fun AttractionsView(navController: NavController) {
     }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag("attractions_screen")
     ) {
         if (isLoading) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag("loading_indicator"),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
             }
         } else if (error != null) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag("error_state"),
                 contentAlignment = Alignment.Center
             ) {
                 Column(
@@ -69,7 +80,8 @@ fun AttractionsView(navController: NavController) {
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
-                        onClick = { viewModel.refreshAttractions() }
+                        onClick = { viewModel.refreshAttractions() },
+                        modifier = Modifier.testTag("retry_button")
                     ) {
                         Text(stringResource(R.string.try_again))
                     }
@@ -77,7 +89,9 @@ fun AttractionsView(navController: NavController) {
             }
         } else if (attractions.isEmpty()) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag("empty_state"),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -87,7 +101,9 @@ fun AttractionsView(navController: NavController) {
             }
         } else {
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag("attractions_list"),
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -98,7 +114,9 @@ fun AttractionsView(navController: NavController) {
                     PreviewAttractionCard(
                         attraction = attraction,
                         hasMoreButton = true,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("attraction_item_${attraction.name}"),
                         navController = navController
                     )
                 }
