@@ -33,16 +33,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.traveltoandroid.R
 import com.example.traveltoandroid.attractions.AttractionDataCard
-import com.example.traveltoandroid.attractions.PreviewAttractionCard
 import com.example.traveltoandroid.attractions.AttractionDiscussionCard
-import com.example.traveltoandroid.viewModels.attraction.AttractionViewModel
+import com.example.traveltoandroid.attractions.PreviewAttractionCard
 import com.example.traveltoandroid.viewModels.attraction.AttractionViewModelFactory
+import com.example.traveltoandroid.viewModels.attraction.IAttractionViewModel
 import com.example.traveltoandroid.views.discussion.CreateDiscussionView
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,12 +51,11 @@ import com.example.traveltoandroid.views.discussion.CreateDiscussionView
 fun AttractionView(
     navController: NavController,
     onBackClick: () -> Unit,
-    attractionName: String
-) {
-    val viewModel: AttractionViewModel = viewModel(
+    attractionName: String,
+    viewModel: IAttractionViewModel = viewModel(
         factory = AttractionViewModelFactory(attractionName)
     )
-
+) {
     val attraction by viewModel.attraction.collectAsState()
     val isLoadingAttraction by viewModel.isLoadingAttraction.collectAsState()
     val errorAttraction by viewModel.errorAttraction.collectAsState()
@@ -91,17 +91,22 @@ fun AttractionView(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .testTag("attraction_screen")
         ) {
             if (isLoadingAttraction) {
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .testTag("loading_indicator"),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
                 }
             } else if (errorAttraction != null) {
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .testTag("error_state"),
                     contentAlignment = Alignment.Center
                 ) {
                     Column(
@@ -132,7 +137,8 @@ fun AttractionView(
                 ) {
                     // Attraction card and button (fixed height)
                     LazyColumn(
-                        modifier = Modifier.weight(1f), // Takes available space but allows discussion form to show
+                        modifier = Modifier
+                            .weight(1f),
                         contentPadding = PaddingValues(16.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
@@ -141,7 +147,9 @@ fun AttractionView(
                                 PreviewAttractionCard(
                                     attraction = it,
                                     hasMoreButton = false,
-                                    modifier = Modifier.fillMaxWidth(),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .testTag("attraction_filled"),
                                     navController = navController,
                                     viewModel = viewModel
                                 )
@@ -152,7 +160,9 @@ fun AttractionView(
                             attraction?.let {
                                 AttractionDataCard(
                                     attraction = it,
-                                    modifier = Modifier.fillMaxSize()
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .testTag("attraction_data"),
                                 )
                             }
                         }
@@ -160,11 +170,16 @@ fun AttractionView(
                         item {
                             Button(onClick = {
                                 discussionCreationIsVisible = !discussionCreationIsVisible
-                            }) {
+                            }, modifier = Modifier.testTag("discussion_creation_is_visible")) {
                                 Text(
-                                    text = if (discussionCreationIsVisible) stringResource(R.string.cancel) else stringResource(
-                                        R.string.send_discussion
-                                    )
+                                    text =
+                                    if (discussionCreationIsVisible) {
+                                        stringResource(R.string.cancel)
+                                    } else {
+                                        stringResource(
+                                            R.string.send_discussion
+                                        )
+                                    }
                                 )
                             }
                         }
@@ -197,7 +212,8 @@ fun AttractionView(
                                         )
                                         Spacer(modifier = Modifier.height(8.dp))
                                         Text(
-                                            text = errorDiscussions ?: stringResource(R.string.unknown_error),
+                                            text = errorDiscussions
+                                                ?: stringResource(R.string.unknown_error),
                                             style = MaterialTheme.typography.bodyMedium
                                         )
                                         Spacer(modifier = Modifier.height(16.dp))

@@ -31,8 +31,8 @@ import androidx.navigation.NavController
 import com.example.traveltoandroid.R
 import com.example.traveltoandroid.models.AttractionModel
 import com.example.traveltoandroid.utils.Base64Image
-import com.example.traveltoandroid.viewModels.attraction.AttractionViewModel
 import com.example.traveltoandroid.viewModels.attraction.AttractionViewModelFactory
+import com.example.traveltoandroid.viewModels.attraction.IAttractionViewModel
 
 @Composable
 fun PreviewAttractionCard(
@@ -40,7 +40,7 @@ fun PreviewAttractionCard(
     hasMoreButton: Boolean,
     modifier: Modifier = Modifier,
     navController: NavController,
-    viewModel: AttractionViewModel = viewModel(
+    viewModel: IAttractionViewModel = viewModel(
         factory = attraction.name?.let { AttractionViewModelFactory(it) }
     )
 ) {

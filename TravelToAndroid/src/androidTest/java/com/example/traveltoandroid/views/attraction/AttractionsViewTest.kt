@@ -1,4 +1,4 @@
-package com.example.traveltoandroid
+package com.example.traveltoandroid.views.attraction
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -7,7 +7,6 @@ import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.rememberNavController
 import com.example.traveltoandroid.models.AttractionModel
 import com.example.traveltoandroid.viewModels.attraction.IAttractionsViewModel
-import com.example.traveltoandroid.views.attraction.AttractionsView
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
 import org.junit.Rule

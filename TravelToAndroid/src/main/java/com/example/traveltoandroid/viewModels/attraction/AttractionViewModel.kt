@@ -14,34 +14,34 @@ import kotlinx.coroutines.launch
 
 class AttractionViewModel(
     private val attractionName: String
-) : ViewModel() {
+) : ViewModel(), IAttractionViewModel {
 
     private val _attraction = MutableStateFlow<AttractionModel?>(null)
-    val attraction: StateFlow<AttractionModel?> get() = _attraction.asStateFlow()
+    override val attraction: StateFlow<AttractionModel?> get() = _attraction.asStateFlow()
 
     private val _isLoadingAttraction = MutableStateFlow(false)
-    val isLoadingAttraction: StateFlow<Boolean> get() = _isLoadingAttraction.asStateFlow()
+    override val isLoadingAttraction: StateFlow<Boolean> get() = _isLoadingAttraction.asStateFlow()
 
     private val _errorAttraction = MutableStateFlow<String?>(null)
-    val errorAttraction: StateFlow<String?> get() = _errorAttraction.asStateFlow()
+    override val errorAttraction: StateFlow<String?> get() = _errorAttraction.asStateFlow()
 
     private val _discussions = MutableStateFlow<List<DiscussionModel>>(emptyList())
-    val discussions: StateFlow<List<DiscussionModel>> get() = _discussions.asStateFlow()
+    override val discussions: StateFlow<List<DiscussionModel>> get() = _discussions.asStateFlow()
 
     private val _isLoadingDiscussions = MutableStateFlow(false)
-    val isLoadingDiscussions: StateFlow<Boolean> get() = _isLoadingDiscussions.asStateFlow()
+    override val isLoadingDiscussions: StateFlow<Boolean> get() = _isLoadingDiscussions.asStateFlow()
 
     private val _errorDiscussions = MutableStateFlow<String?>(null)
-    val errorDiscussions: StateFlow<String?> get() = _errorDiscussions.asStateFlow()
+    override val errorDiscussions: StateFlow<String?> get() = _errorDiscussions.asStateFlow()
 
     private val _isLoadingLike = MutableStateFlow(false)
-    val isLoadingLike: StateFlow<Boolean> get() = _isLoadingAttraction.asStateFlow()
+    override val isLoadingLike: StateFlow<Boolean> get() = _isLoadingAttraction.asStateFlow()
 
     private val _errorLike = MutableStateFlow<String?>(null)
-    val errorLike: StateFlow<String?> get() = _errorLike.asStateFlow()
+    override val errorLike: StateFlow<String?> get() = _errorLike.asStateFlow()
 
 
-    internal fun loadAttractionData(context: Context) {
+    override fun loadAttractionData(context: Context) {
         loadAttractionByName(context)
         loadDiscussionsForAttraction()
     }
@@ -102,7 +102,7 @@ class AttractionViewModel(
         }
     }
 
-    fun likeAttraction(
+    override fun likeAttraction(
         context: Context
     ) {
         _isLoadingLike.value = true
@@ -128,7 +128,7 @@ class AttractionViewModel(
         }
     }
 
-    fun refreshAttractionAndDiscussions(context: Context) {
+    override fun refreshAttractionAndDiscussions(context: Context) {
         _attraction.value = null
         _discussions.value = emptyList()
         loadAttractionData(context)

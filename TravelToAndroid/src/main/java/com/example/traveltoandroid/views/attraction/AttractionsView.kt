@@ -35,7 +35,6 @@ fun AttractionsView(
     navController: NavController,
     viewModel: IAttractionsViewModel = viewModel<AttractionsViewModel>()
 ) {
-//    val viewModel: AttractionsViewModel = viewModel()
     val attractions by viewModel.attractions.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
