@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.traveltoandroid.R
-import com.example.traveltoandroid.viewModels.attraction.AttractionsViewModel
 import com.example.traveltoandroid.viewModels.user.IUserViewModel
 import com.example.traveltoandroid.viewModels.user.UserViewModel
 
@@ -97,7 +96,6 @@ fun ProfileView(
                 ) {
                     CircularProgressIndicator()
                 }
-                // TODO SOMETHING BROKEN ERROR HAPPENS SOMETIMES
             } else if (error != null) {
                 Box(
                     modifier = Modifier
