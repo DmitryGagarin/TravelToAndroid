@@ -43,7 +43,7 @@ import com.example.traveltoandroid.attractions.AttractionDataCard
 import com.example.traveltoandroid.attractions.AttractionDiscussionCard
 import com.example.traveltoandroid.attractions.PreviewAttractionCard
 import com.example.traveltoandroid.viewModels.attraction.AttractionViewModelFactory
-import com.example.traveltoandroid.viewModels.attraction.IAttractionViewModel
+import com.example.traveltoandroid.viewModels.attraction.interfaces.IAttractionViewModel
 import com.example.traveltoandroid.views.discussion.CreateDiscussionView
 
 @OptIn(ExperimentalMaterial3Api::class)

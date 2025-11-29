@@ -32,7 +32,7 @@ import com.example.traveltoandroid.R
 import com.example.traveltoandroid.models.AttractionModel
 import com.example.traveltoandroid.utils.Base64Image
 import com.example.traveltoandroid.viewModels.attraction.AttractionViewModelFactory
-import com.example.traveltoandroid.viewModels.attraction.IAttractionViewModel
+import com.example.traveltoandroid.viewModels.attraction.interfaces.IAttractionViewModel
 
 @Composable
 fun PreviewAttractionCard(

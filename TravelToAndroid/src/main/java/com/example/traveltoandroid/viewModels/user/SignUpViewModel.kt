@@ -9,6 +9,7 @@ import com.example.traveltoandroid.models.AuthUser
 import com.example.traveltoandroid.utils.RetrofitClient
 import com.example.traveltoandroid.utils.getAccessToken
 import com.example.traveltoandroid.utils.saveUserToSharedPrefs
+import com.example.traveltoandroid.viewModels.user.interfaces.ISignUpViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

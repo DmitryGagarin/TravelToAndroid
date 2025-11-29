@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.traveltoandroid.R
-import com.example.traveltoandroid.viewModels.user.ISignInViewModel
+import com.example.traveltoandroid.viewModels.user.interfaces.ISignInViewModel
 import com.example.traveltoandroid.viewModels.user.SignInViewModel
 
 @Composable

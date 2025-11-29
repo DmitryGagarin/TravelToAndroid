@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.rememberNavController
 import com.example.traveltoandroid.models.AttractionModel
-import com.example.traveltoandroid.viewModels.attraction.IAttractionsViewModel
+import com.example.traveltoandroid.viewModels.attraction.interfaces.IAttractionsViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
 import org.junit.Rule

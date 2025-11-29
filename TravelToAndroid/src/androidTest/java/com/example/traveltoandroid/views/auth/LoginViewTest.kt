@@ -8,7 +8,7 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextReplacement
 import androidx.navigation.compose.rememberNavController
 import com.example.traveltoandroid.models.AuthUser
-import com.example.traveltoandroid.viewModels.user.ISignInViewModel
+import com.example.traveltoandroid.viewModels.user.interfaces.ISignInViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
 import org.junit.Rule

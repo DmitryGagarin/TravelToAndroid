@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.traveltoandroid.R
-import com.example.traveltoandroid.viewModels.user.IUserViewModel
+import com.example.traveltoandroid.viewModels.user.interfaces.IUserViewModel
 import com.example.traveltoandroid.viewModels.user.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

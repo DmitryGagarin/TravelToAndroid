@@ -1,4 +1,4 @@
-package com.example.traveltoandroid.viewModels.attraction
+package com.example.traveltoandroid.viewModels.attraction.interfaces
 
 import com.example.traveltoandroid.models.AttractionModel
 import kotlinx.coroutines.flow.StateFlow

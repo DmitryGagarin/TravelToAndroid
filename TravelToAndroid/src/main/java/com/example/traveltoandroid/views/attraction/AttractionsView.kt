@@ -28,7 +28,7 @@ import androidx.navigation.NavController
 import com.example.traveltoandroid.R
 import com.example.traveltoandroid.attractions.PreviewAttractionCard
 import com.example.traveltoandroid.viewModels.attraction.AttractionsViewModel
-import com.example.traveltoandroid.viewModels.attraction.IAttractionsViewModel
+import com.example.traveltoandroid.viewModels.attraction.interfaces.IAttractionsViewModel
 
 @Composable
 fun AttractionsView(

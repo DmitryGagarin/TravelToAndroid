@@ -1,4 +1,4 @@
-package com.example.traveltoandroid.viewModels.attraction
+package com.example.traveltoandroid.viewModels.attraction.interfaces
 
 import android.content.Context
 import com.example.traveltoandroid.models.AttractionModel

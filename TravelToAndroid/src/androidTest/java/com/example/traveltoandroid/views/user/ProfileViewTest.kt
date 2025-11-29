@@ -5,7 +5,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.navigation.compose.rememberNavController
 import com.example.traveltoandroid.models.UserModel
-import com.example.traveltoandroid.viewModels.user.IUserViewModel
+import com.example.traveltoandroid.viewModels.user.interfaces.IUserViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
 import org.junit.Rule

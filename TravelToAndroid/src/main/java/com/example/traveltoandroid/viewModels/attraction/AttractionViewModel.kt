@@ -7,6 +7,7 @@ import com.example.traveltoandroid.models.AttractionModel
 import com.example.traveltoandroid.models.DiscussionModel
 import com.example.traveltoandroid.utils.RetrofitClient
 import com.example.traveltoandroid.utils.getAccessToken
+import com.example.traveltoandroid.viewModels.attraction.interfaces.IAttractionViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

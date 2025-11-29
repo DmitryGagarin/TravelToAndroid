@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.traveltoandroid.models.AttractionModel
 import com.example.traveltoandroid.utils.RetrofitClient
+import com.example.traveltoandroid.viewModels.attraction.interfaces.IAttractionsViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

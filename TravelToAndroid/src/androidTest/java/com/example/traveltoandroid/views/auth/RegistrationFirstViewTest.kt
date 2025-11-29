@@ -2,7 +2,7 @@ package com.example.traveltoandroid.views.auth
 
 import android.content.Context
 import com.example.traveltoandroid.models.AuthUser
-import com.example.traveltoandroid.viewModels.user.ISignUpViewModel
+import com.example.traveltoandroid.viewModels.user.interfaces.ISignUpViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
 private class FakeSignUpViewModel() : ISignUpViewModel {

@@ -1,4 +1,4 @@
-package com.example.traveltoandroid.viewModels.user
+package com.example.traveltoandroid.viewModels.user.interfaces
 
 import android.content.Context
 import com.example.traveltoandroid.models.UserModel
