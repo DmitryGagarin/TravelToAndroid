@@ -13,17 +13,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class UserViewModel : ViewModel() {
+class UserViewModel : ViewModel(), IUserViewModel {
     private val _user = MutableStateFlow<UserModel?>(null)
-    val user: StateFlow<UserModel?> get() = _user.asStateFlow()
+    override val user: StateFlow<UserModel?> get() = _user.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> get() = _isLoading.asStateFlow()
+    override val isLoading: StateFlow<Boolean> get() = _isLoading.asStateFlow()
 
     private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> get() = _error.asStateFlow()
+    override val error: StateFlow<String?> get() = _error.asStateFlow()
 
-    fun getUser(
+    override fun getUser(
         context: Context,
     ) {
         _isLoading.value = true
@@ -44,12 +44,12 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    fun refreshUser(context: Context) {
+    override fun refreshUser(context: Context) {
         _user.value = null
         getUser(context = context)
     }
 
-    fun editUserData(
+    override fun editUserData(
         context: Context,
         name: String?,
         surname: String?,
