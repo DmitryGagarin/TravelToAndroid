@@ -6,18 +6,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.traveltoandroid.R
+import com.example.traveltoandroid.viewModels.user.ISignInViewModel
 import com.example.traveltoandroid.viewModels.user.SignInViewModel
 
 @Composable
 fun LoginView(
     navController: NavController,
+    viewModel: ISignInViewModel = viewModel<SignInViewModel>()
 ) {
-    val viewModel: SignInViewModel = viewModel()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
 
@@ -35,20 +37,22 @@ fun LoginView(
     ) {
         TextField(
             value = login,
-//            value = "admin@travel.com",
             onValueChange = { login = it },
             label = { Text(stringResource(R.string.login)) },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("login_value")
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         TextField(
             value = password,
-//            value = "password",
             onValueChange = { password = it },
             label = { Text(stringResource(R.string.password)) },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("password_value")
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -65,7 +69,9 @@ fun LoginView(
                 )
             },
             enabled = !isLoading,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("sign_in_button")
         ) {
             Text(text = if (isLoading) stringResource(R.string.logging_in) else stringResource(R.string.login))
         }

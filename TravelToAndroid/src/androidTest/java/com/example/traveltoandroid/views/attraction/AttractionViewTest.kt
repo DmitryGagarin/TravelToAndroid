@@ -12,7 +12,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class FakeAttractionViewModel : IAttractionViewModel {
+private class FakeAttractionViewModel : IAttractionViewModel {
 
     override val attraction = MutableStateFlow<AttractionModel?>(null)
     override val isLoadingAttraction = MutableStateFlow(false)

@@ -14,23 +14,23 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SignUpViewModel : ViewModel() {
+class SignUpViewModel : ViewModel(), ISignUpViewModel {
     private val _user = MutableStateFlow<AuthUser?>(null)
-    val user: StateFlow<AuthUser?> get() = _user.asStateFlow()
+    override val user: StateFlow<AuthUser?> get() = _user.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> get() = _isLoading.asStateFlow()
+    override val isLoading: StateFlow<Boolean> get() = _isLoading.asStateFlow()
 
     private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> get() = _error.asStateFlow()
+    override val error: StateFlow<String?> get() = _error.asStateFlow()
 
     private val _verificationIsLoading = MutableStateFlow(false)
-    val verificationIsLoading: StateFlow<Boolean> get() = _verificationIsLoading.asStateFlow()
+    override val verificationIsLoading: StateFlow<Boolean> get() = _verificationIsLoading.asStateFlow()
 
     private val _verificationError = MutableStateFlow<String?>(null)
-    val verificationError: StateFlow<String?> get() = _verificationError.asStateFlow()
+    override val verificationError: StateFlow<String?> get() = _verificationError.asStateFlow()
 
-    fun signUpUserFirst(
+    override fun signUpUserFirst(
         email: String,
         password: String,
         privacyPoliceAgreed: Boolean,
@@ -64,7 +64,7 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
-    fun signUpUserSecond(
+    override fun signUpUserSecond(
         name: String,
         surname: String,
         context: Context,

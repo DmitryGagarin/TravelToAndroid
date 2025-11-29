@@ -26,13 +26,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.traveltoandroid.R
+import com.example.traveltoandroid.viewModels.user.ISignUpViewModel
 import com.example.traveltoandroid.viewModels.user.SignUpViewModel
 
 @Composable
 fun RegistrationFirstView(
-    navController: NavController
+    navController: NavController,
+    viewModel: ISignUpViewModel = viewModel<SignUpViewModel>()
 ) {
-    val viewModel: SignUpViewModel = viewModel()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
 

@@ -11,17 +11,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SignInViewModel : ViewModel() {
+class SignInViewModel : ViewModel(), ISignInViewModel {
     private val _user = MutableStateFlow<AuthUser?>(null)
-    val user: StateFlow<AuthUser?> get() = _user.asStateFlow()
+    override val user: StateFlow<AuthUser?> get() = _user.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> get() = _isLoading.asStateFlow()
+    override val isLoading: StateFlow<Boolean> get() = _isLoading.asStateFlow()
 
     private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> get() = _error.asStateFlow()
+    override val error: StateFlow<String?> get() = _error.asStateFlow()
 
-    fun signInUser(
+    override fun signInUser(
         login: String,
         password: String,
         context: Context,

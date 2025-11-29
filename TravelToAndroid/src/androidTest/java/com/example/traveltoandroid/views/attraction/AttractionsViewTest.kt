@@ -12,7 +12,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class FakeAttractionsViewModel : IAttractionsViewModel {
+private class FakeAttractionsViewModel : IAttractionsViewModel {
     override val attractions = MutableStateFlow<List<AttractionModel>>(emptyList())
     override val isLoading = MutableStateFlow(false)
     override val error = MutableStateFlow<String?>(null)
@@ -87,8 +87,38 @@ class AttractionsViewTest {
     @Test
     fun whenAttractionsLoaded_shouldShowAttractionsList() {
         viewModel.attractions.value = listOf(
-            AttractionModel("", "A", "", "", emptyList(), emptyList(), "", "", "", false, "", "", 0.0, ""),
-            AttractionModel("", "B", "", "", emptyList(), emptyList(), "", "", "", false, "", "", 0.0, "")
+            AttractionModel(
+                "",
+                "A",
+                "",
+                "",
+                emptyList(),
+                emptyList(),
+                "",
+                "",
+                "",
+                false,
+                "",
+                "",
+                0.0,
+                ""
+            ),
+            AttractionModel(
+                "",
+                "B",
+                "",
+                "",
+                emptyList(),
+                emptyList(),
+                "",
+                "",
+                "",
+                false,
+                "",
+                "",
+                0.0,
+                ""
+            )
         )
 
         setComposeContent()
