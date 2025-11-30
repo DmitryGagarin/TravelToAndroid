@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -56,6 +57,7 @@ fun RegistrationFirstView(
             value = email,
             onValueChange = { email = it },
             label = { Text(stringResource(R.string.email)) },
+            modifier = Modifier.testTag("email_input")
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -64,14 +66,17 @@ fun RegistrationFirstView(
             value = password,
             onValueChange = { password = it },
             label = { Text(stringResource(R.string.password)) },
+            modifier = Modifier.testTag("password_input")
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // TODO allow to change state only after password and login are input
         Row {
             Checkbox(
                 checked = privacyPoliceAgreed,
                 onCheckedChange = { privacyPoliceAgreed = !privacyPoliceAgreed },
+                modifier = Modifier.testTag("privacy_police_agreed")
             )
             Text(text = stringResource(R.string.are_you_agreed_with_out_privacy_policy))
         }
@@ -80,6 +85,7 @@ fun RegistrationFirstView(
             Checkbox(
                 checked = userAgreement,
                 onCheckedChange = { userAgreement = !userAgreement },
+                modifier = Modifier.testTag("user_agreement")
             )
             Text(text = stringResource(R.string.are_you_agreed_with_getting_advertisements_emails))
         }
@@ -88,6 +94,7 @@ fun RegistrationFirstView(
             Checkbox(
                 checked = mailingAgreement,
                 onCheckedChange = { mailingAgreement = !mailingAgreement },
+                modifier = Modifier.testTag("mailing_agreement")
             )
             Text(text = stringResource(R.string.are_you_agreed_with_out_user_agreement))
         }
@@ -106,7 +113,7 @@ fun RegistrationFirstView(
                 ) {
                     navController.navigate("registration_second")
                 }
-            }
+            }, modifier = Modifier.testTag("registration_button")
         ) {
             Text(
                 text = if (isLoading) stringResource(R.string.registration) + "..." else stringResource(
@@ -120,7 +127,8 @@ fun RegistrationFirstView(
             Text(
                 text = error ?: "",
                 color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.testTag("error_occurred")
             )
         }
 
