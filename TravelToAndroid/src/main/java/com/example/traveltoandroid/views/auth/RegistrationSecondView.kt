@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -51,11 +52,13 @@ fun RegistrationSecondView(
             value = name,
             onValueChange = { name = it },
             label = { Text(stringResource(R.string.name)) },
+            modifier = Modifier.testTag("name_input")
         )
         TextField(
             value = surname,
             onValueChange = { surname = it },
             label = { Text(stringResource(R.string.surname)) },
+            modifier = Modifier.testTag("surname_input")
         )
 
         Button(
@@ -67,15 +70,20 @@ fun RegistrationSecondView(
                 ) {
                     navController.navigate("account_verification")
                 }
-            }
+            }, modifier = Modifier.testTag("end_registration_button")
         ) {
-            Text(text = if (isLoading) stringResource(R.string.complete_registration) + "..." else stringResource(R.string.complete_registration))
+            Text(
+                text = if (isLoading) {
+                    stringResource(R.string.complete_registration) + "..."
+                } else {
+                    stringResource(R.string.complete_registration)
+                }
+            )
         }
 
         Button(
-            onClick = {
-                    navController.navigate("login")
-                }
+            onClick = { navController.navigate("login") },
+            modifier = Modifier.testTag("skip_stage_button")
         ) {
             Text(text = stringResource(R.string.skip_this_stage))
         }
@@ -85,14 +93,9 @@ fun RegistrationSecondView(
             Text(
                 text = error ?: "",
                 color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.testTag("error_text")
             )
-        }
-
-        Button(
-            onClick = { navController.navigate("login") }
-        ) {
-            Text(text = stringResource(R.string.skip_this_stage))
         }
 
         Spacer(modifier = Modifier.height(10.dp))
