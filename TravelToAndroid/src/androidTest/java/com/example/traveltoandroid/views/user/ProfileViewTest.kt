@@ -1,33 +1,13 @@
 package com.example.traveltoandroid.views.user
 
-import android.content.Context
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.navigation.compose.rememberNavController
 import com.example.traveltoandroid.models.UserModel
-import com.example.traveltoandroid.viewModels.user.interfaces.IUserViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.example.traveltoandroid.views.utils.FakeUserViewModel
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-
-class FakeUserViewModel : IUserViewModel {
-    override val user = MutableStateFlow<UserModel?>(null)
-    override val isLoading = MutableStateFlow(false)
-    override val error = MutableStateFlow<String?>(null)
-
-    override fun getUser(context: Context) {}
-    override fun refreshUser(context: Context) {}
-    override fun editUserData(
-        context: Context,
-        name: String?,
-        surname: String?,
-        email: String?,
-        phone: String?,
-        onSuccess: () -> Unit
-    ) {
-    }
-}
 
 class ProfileViewTest {
     @get:Rule

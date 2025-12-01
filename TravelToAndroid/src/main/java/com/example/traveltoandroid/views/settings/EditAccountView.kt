@@ -25,21 +25,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.traveltoandroid.R
 import com.example.traveltoandroid.viewModels.user.UserViewModel
+import com.example.traveltoandroid.viewModels.user.interfaces.IUserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditAccountView(
     navController: NavController,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    viewModel: IUserViewModel = viewModel<UserViewModel>()
 ) {
-
-    val viewModel: UserViewModel = viewModel()
     val context: Context = LocalContext.current
     val user by viewModel.user.collectAsState()
 
@@ -78,6 +79,7 @@ fun EditAccountView(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
+                .testTag("main_column")
                 .padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -86,34 +88,42 @@ fun EditAccountView(
                 value = name,
                 onValueChange = { name = it },
                 label = { Text(stringResource(R.string.name)) },
+                modifier = Modifier.testTag("name")
             )
 
             TextField(
                 value = surname,
                 onValueChange = { surname = it },
                 label = { Text(stringResource(R.string.surname)) },
+                modifier = Modifier.testTag("surname")
             )
 
             TextField(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text(stringResource(R.string.email)) },
+                modifier = Modifier.testTag("email")
             )
 
             TextField(
                 value = phone,
                 onValueChange = { phone = it },
                 label = { Text(stringResource(R.string.phone)) },
+                modifier = Modifier.testTag("phone")
             )
 
-            Button(onClick = {
-                viewModel.editUserData(
-                    context = context,
-                    name, surname, email, phone
-                ) {
-                    navController.navigate("edit_account")
-                }
-            }) {
+            Button(
+                onClick = {
+                    viewModel.editUserData(
+                        context = context,
+                        name, surname, email, phone
+                    ) {
+                        navController.navigate("edit_account")
+                    }
+                },
+                modifier = Modifier.testTag("edit_account_button")
+            )
+            {
                 Text(text = stringResource(R.string.save_changed))
             }
         }

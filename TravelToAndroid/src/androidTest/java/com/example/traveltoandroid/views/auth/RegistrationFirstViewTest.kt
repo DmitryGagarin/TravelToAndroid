@@ -6,6 +6,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.navigation.compose.rememberNavController
+import com.example.traveltoandroid.views.utils.FakeSignUpViewModel
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

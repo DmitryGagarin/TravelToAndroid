@@ -1,4 +1,4 @@
-package com.example.traveltoandroid.views.auth
+package com.example.traveltoandroid.views.utils
 
 import android.content.Context
 import com.example.traveltoandroid.models.AuthUser
