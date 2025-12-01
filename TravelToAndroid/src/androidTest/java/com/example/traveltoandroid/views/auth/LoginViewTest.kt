@@ -14,7 +14,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-private class FakeSignInViewModel() : ISignInViewModel {
+private class FakeSignInViewModel : ISignInViewModel {
     override val user = MutableStateFlow<AuthUser?>(null)
     override val isLoading = MutableStateFlow(false)
     override val error = MutableStateFlow<String?>(null)

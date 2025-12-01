@@ -33,6 +33,7 @@ interface AttractionService {
         @Part images: List<MultipartBody.Part>
     ): AttractionModel
 
+    // TODO NO RETURN TYPE????
     @POST("like/add/{attractionName}")
     suspend fun likeAttraction(
         @Header("Authorization") token: String,

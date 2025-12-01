@@ -5,7 +5,7 @@ import com.example.traveltoandroid.models.AuthUser
 import com.example.traveltoandroid.viewModels.user.interfaces.ISignUpViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class FakeSignUpViewModel() : ISignUpViewModel {
+class FakeSignUpViewModel : ISignUpViewModel {
     override val user = MutableStateFlow<AuthUser?>(null)
     override val isLoading = MutableStateFlow(false)
     override val error = MutableStateFlow<String?>(null)

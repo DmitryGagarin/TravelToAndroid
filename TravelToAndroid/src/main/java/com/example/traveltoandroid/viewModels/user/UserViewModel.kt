@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.traveltoandroid.form.UserProfileForm
 import com.example.traveltoandroid.models.UserModel
+import com.example.traveltoandroid.repository.user.UserRepository
 import com.example.traveltoandroid.utils.RetrofitClient
 import com.example.traveltoandroid.utils.getAccessToken
 import com.example.traveltoandroid.utils.saveUserToSharedPrefs
@@ -14,7 +15,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class UserViewModel : ViewModel(), IUserViewModel {
+class UserViewModel(
+    private val repository: UserRepository = RetrofitClient.userRepository
+) : ViewModel(), IUserViewModel {
     private val _user = MutableStateFlow<UserModel?>(null)
     override val user: StateFlow<UserModel?> get() = _user.asStateFlow()
 
@@ -32,7 +35,10 @@ class UserViewModel : ViewModel(), IUserViewModel {
 
         viewModelScope.launch {
             try {
-                val response = RetrofitClient.userService.getUser(
+//                val response = RetrofitClient.userService.getUser(
+//                    getAccessToken(context)
+//                )
+                val response = repository.getUser(
                     getAccessToken(context)
                 )
                 _user.value = response
@@ -68,7 +74,8 @@ class UserViewModel : ViewModel(), IUserViewModel {
                     email = email,
                     phone = phone
                 )
-                val response = RetrofitClient.userService.saveUserChanges(getAccessToken(context), form)
+//                val response = RetrofitClient.userService.saveUserChanges(getAccessToken(context), form)
+                val response = repository.saveUserChanges(getAccessToken(context), form)
                 onSuccess()
                 saveUserToSharedPrefs(context, response)
             } catch (e: Exception) {

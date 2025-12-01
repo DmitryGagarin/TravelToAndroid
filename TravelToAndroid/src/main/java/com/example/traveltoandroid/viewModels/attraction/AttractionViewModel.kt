@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.traveltoandroid.models.AttractionModel
 import com.example.traveltoandroid.models.DiscussionModel
+import com.example.traveltoandroid.repository.attraction.AttractionRepository
+import com.example.traveltoandroid.repository.discussion.DiscussionRepository
 import com.example.traveltoandroid.utils.RetrofitClient
 import com.example.traveltoandroid.utils.getAccessToken
 import com.example.traveltoandroid.viewModels.attraction.interfaces.IAttractionViewModel
@@ -14,7 +16,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class AttractionViewModel(
-    private val attractionName: String
+    private val attractionName: String,
+    private val attractionRepository: AttractionRepository = RetrofitClient.attractionRepository,
+    private val discussionRepository: DiscussionRepository = RetrofitClient.discussionRepository
 ) : ViewModel(), IAttractionViewModel {
 
     private val _attraction = MutableStateFlow<AttractionModel?>(null)
@@ -44,7 +48,7 @@ class AttractionViewModel(
 
     override fun loadAttractionData(context: Context) {
         loadAttractionByName(context)
-        loadDiscussionsForAttraction()
+        loadDiscussionsForAttraction(context)
     }
 
     private fun loadAttractionByName(
@@ -55,7 +59,11 @@ class AttractionViewModel(
 
         viewModelScope.launch {
             try {
-                val response = RetrofitClient.attractionService.getAttractionByName(
+//                val response = RetrofitClient.attractionService.getAttractionByName(
+//                    getAccessToken(context),
+//                    attractionName
+//                )
+                val response = attractionRepository.getAttractionByName(
                     getAccessToken(context),
                     attractionName
                 )
@@ -77,14 +85,16 @@ class AttractionViewModel(
         }
     }
 
-    private fun loadDiscussionsForAttraction() {
+    private fun loadDiscussionsForAttraction(
+        context: Context
+    ) {
         _isLoadingDiscussions.value = true
         _errorDiscussions.value = null
 
         viewModelScope.launch {
             try {
-                val response =
-                    RetrofitClient.discussionService.getDiscussionsByAttractionName(attractionName)
+//                val response = RetrofitClient.discussionService.getDiscussionsByAttractionName(attractionName)
+                val response = discussionRepository.getDiscussionsByAttractionName(attractionName, getAccessToken(context))
                 _discussions.value = response._embedded.discussionModelList
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -110,7 +120,11 @@ class AttractionViewModel(
         _errorLike.value = null
         viewModelScope.launch {
             try {
-                RetrofitClient.attractionService.likeAttraction(
+//                RetrofitClient.attractionService.likeAttraction(
+//                    getAccessToken(context),
+//                    attractionName
+//                )
+                attractionRepository.likeAttraction(
                     getAccessToken(context),
                     attractionName
                 )

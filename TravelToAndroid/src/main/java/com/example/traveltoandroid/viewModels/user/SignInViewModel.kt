@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.traveltoandroid.form.UserSignInForm
 import com.example.traveltoandroid.models.AuthUser
+import com.example.traveltoandroid.repository.user.UserRepository
 import com.example.traveltoandroid.utils.RetrofitClient
 import com.example.traveltoandroid.viewModels.user.interfaces.ISignInViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SignInViewModel : ViewModel(), ISignInViewModel {
+class SignInViewModel(
+    private val repository: UserRepository = RetrofitClient.userRepository
+) : ViewModel(), ISignInViewModel {
     private val _user = MutableStateFlow<AuthUser?>(null)
     override val user: StateFlow<AuthUser?> get() = _user.asStateFlow()
 
@@ -34,7 +37,8 @@ class SignInViewModel : ViewModel(), ISignInViewModel {
         viewModelScope.launch {
             try {
                 val form = UserSignInForm(login, password)
-                val response = RetrofitClient.userService.signIn(form)
+//                val response = RetrofitClient.userService.signIn(form)
+                val response = repository.signIn(form)
                 _user.value = response
                 saveUserToSharedPrefs(context, response)
                 onSuccess()

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.traveltoandroid.form.UserSignUpFormFirst
 import com.example.traveltoandroid.form.UserSignUpFormSecond
 import com.example.traveltoandroid.models.AuthUser
+import com.example.traveltoandroid.repository.user.UserRepository
 import com.example.traveltoandroid.utils.RetrofitClient
 import com.example.traveltoandroid.utils.getAccessToken
 import com.example.traveltoandroid.utils.saveUserToSharedPrefs
@@ -15,7 +16,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SignUpViewModel : ViewModel(), ISignUpViewModel {
+class SignUpViewModel(
+    private val repository: UserRepository = RetrofitClient.userRepository
+) : ViewModel(), ISignUpViewModel {
     private val _user = MutableStateFlow<AuthUser?>(null)
     override val user: StateFlow<AuthUser?> get() = _user.asStateFlow()
 
@@ -52,7 +55,8 @@ class SignUpViewModel : ViewModel(), ISignUpViewModel {
                     userAgreement = userAgreement,
                     mailingAgreement = mailingAgreement
                 )
-                val response = RetrofitClient.userService.signUpFirst(form)
+//                val response = RetrofitClient.userService.signUpFirst(form)
+                val response = repository.signUpFirst(form)
                 _user.value = response
                 saveUserToSharedPrefs(context, response)
                 onSuccess()
@@ -77,8 +81,8 @@ class SignUpViewModel : ViewModel(), ISignUpViewModel {
         viewModelScope.launch {
             try {
                 val form = UserSignUpFormSecond(name, surname)
-                val response =
-                    RetrofitClient.userService.signUpSecond(getAccessToken(context), form)
+//                val response = RetrofitClient.userService.signUpSecond(getAccessToken(context), form)
+                val response = repository.signUpSecond(getAccessToken(context), form)
                 _user.value = response
                 onSuccess()
                 saveUserToSharedPrefs(context, response)
@@ -99,7 +103,11 @@ class SignUpViewModel : ViewModel(), ISignUpViewModel {
 
         viewModelScope.launch {
             try {
-                RetrofitClient.userService.sendVerificationEmail(
+//                RetrofitClient.userService.sendVerificationEmail(
+//                    getAccessToken(context),
+//                    getEmail(context)
+//                )
+                repository.sendVerificationEmail(
                     getAccessToken(context),
                     getEmail(context)
                 )

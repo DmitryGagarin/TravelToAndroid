@@ -76,7 +76,7 @@
     <string name="park_facility_name">Название удобства</string>
     <string name="park_facility_description">Описание удобства</string>
     <string name="park_facility_works_around_the_clock">Удобство работает круглосуточно?</string>
-    <string name="selected_images">Выбранные изображения</string>
+    <string name="selected_images">Выбранные изображения %1$s</string>
     <string name="pick_images">Выбрать изображения</string>
     <string name="selected_image">Выбранное изображение</string>
     <string name="create_article_screen">Написать статью</string>

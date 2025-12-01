@@ -3,7 +3,7 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="type">Type</string>
-    <string name="image_of">Image of %1$s</string>
+    <string name="image_of">Image of</string>
     <string name="more">More</string>
     <string name="like">Like</string>
     <string name="profile">Profile</string>

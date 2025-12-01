@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.traveltoandroid.form.CreateDiscussionForm
+import com.example.traveltoandroid.repository.discussion.DiscussionRepository
 import com.example.traveltoandroid.utils.RetrofitClient
 import com.example.traveltoandroid.utils.getAccessToken
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +12,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class DiscussionViewModel : ViewModel() {
+class DiscussionViewModel(
+    private val repository: DiscussionRepository = RetrofitClient.discussionRepository
+) : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> get() = _isLoading.asStateFlow()
 
@@ -40,11 +43,18 @@ class DiscussionViewModel : ViewModel() {
                     content,
                     rating
                 )
-                RetrofitClient.discussionService.sendDiscussion(
+//                RetrofitClient.discussionService.sendDiscussion(
+//                    attractionName,
+//                    getAccessToken(context),
+//                    form
+//                )
+
+                repository.sendDiscussion(
                     attractionName,
                     getAccessToken(context),
                     form
                 )
+
                 onSuccess()
             } catch (e: Exception) {
                 e.printStackTrace()

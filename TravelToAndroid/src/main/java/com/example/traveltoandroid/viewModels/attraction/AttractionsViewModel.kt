@@ -3,6 +3,7 @@ package com.example.traveltoandroid.viewModels.attraction
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.traveltoandroid.models.AttractionModel
+import com.example.traveltoandroid.repository.attraction.AttractionRepository
 import com.example.traveltoandroid.utils.RetrofitClient
 import com.example.traveltoandroid.viewModels.attraction.interfaces.IAttractionsViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +11,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class AttractionsViewModel : ViewModel(), IAttractionsViewModel {
+class AttractionsViewModel(
+    private val repository: AttractionRepository = RetrofitClient.attractionRepository
+): ViewModel(), IAttractionsViewModel {
     private val _attractions = MutableStateFlow<List<AttractionModel>>(emptyList())
     override val attractions: StateFlow<List<AttractionModel>> get() = _attractions.asStateFlow()
 
@@ -30,8 +33,8 @@ class AttractionsViewModel : ViewModel(), IAttractionsViewModel {
 
         viewModelScope.launch {
             try {
-                val response = RetrofitClient.attractionService.getPublishedAttractions()
-                _attractions.value = response._embedded.attractionModelList
+                val response = repository.getPublishedAttractions()
+                _attractions.value = response
             } catch (e: Exception) {
                 e.printStackTrace()
 

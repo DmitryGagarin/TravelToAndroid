@@ -12,7 +12,10 @@ import retrofit2.http.Path
 interface DiscussionService {
 
     @GET("attraction-discussion/{attractionName}")
-    suspend fun getDiscussionsByAttractionName(@Path("attractionName") name: String): PagedDiscussionResponse
+    suspend fun getDiscussionsByAttractionName(
+        @Path("attractionName") name: String,
+        @Header("Authorization") token: String,
+    ): PagedDiscussionResponse
 
     @POST("attraction-discussion/create/{attractionName}")
     suspend fun sendDiscussion(

@@ -3,8 +3,9 @@ package com.example.traveltoandroid.viewModels.attraction
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.traveltoandroid.attractions.AttractionCreateForm
+import com.example.traveltoandroid.form.AttractionCreateForm
 import com.example.traveltoandroid.form.ParkFacilityCreateForm
+import com.example.traveltoandroid.repository.attraction.AttractionRepository
 import com.example.traveltoandroid.utils.RetrofitClient
 import com.example.traveltoandroid.utils.getAccessToken
 import com.example.traveltoandroid.views.attraction.features.models.ParkFacilityModel
@@ -19,7 +20,9 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.InputStream
 
-class AttractionCreateViewModel : ViewModel() {
+class AttractionCreateViewModel (
+    private val repository: AttractionRepository = RetrofitClient.attractionRepository
+) : ViewModel() {
 
     private val _isLoadingAttraction = MutableStateFlow(false)
     val isLoadingAttraction: StateFlow<Boolean> get() = _isLoadingAttraction.asStateFlow()
@@ -129,11 +132,18 @@ class AttractionCreateViewModel : ViewModel() {
             val formJson = gson.toJson(attractionCreateForm)
             val attractionRequestBody = formJson.toRequestBody("application/json".toMediaTypeOrNull())
 
-            RetrofitClient.attractionService.createAttraction(
+//            RetrofitClient.attractionService.createAttraction(
+//                getAccessToken(context),
+//                attractionRequestBody,
+//                attractionImages
+//            )
+//
+            repository.createAttraction(
                 getAccessToken(context),
                 attractionRequestBody,
                 attractionImages
             )
+
             true // Success
         } catch (e: Exception) {
             e.printStackTrace()
@@ -212,12 +222,20 @@ class AttractionCreateViewModel : ViewModel() {
             val formJson = gson.toJson(parkFacilityCreateForm)
             val facilitiesRequestBody = formJson.toRequestBody("application/json".toMediaTypeOrNull())
 
-            RetrofitClient.attractionService.saveParkFacilities(
+//            RetrofitClient.attractionService.saveParkFacilities(
+//                getAccessToken(context),
+//                attractionName,
+//                facilitiesRequestBody,
+//                parkFacilityImages // Now this contains the actual images
+//            )
+
+            repository.saveParkFacilities(
                 getAccessToken(context),
                 attractionName,
                 facilitiesRequestBody,
                 parkFacilityImages // Now this contains the actual images
             )
+
         } catch (e: Exception) {
             e.printStackTrace()
             throw Exception("Failed to create park facilities: ${e.message}")
@@ -229,7 +247,12 @@ class AttractionCreateViewModel : ViewModel() {
         attractionName: String,
         posters: List<MultipartBody.Part>
     ) {
-        RetrofitClient.attractionService.savePosters(
+//        RetrofitClient.attractionService.savePosters(
+//            getAccessToken(context),
+//            attractionName,
+//            posters
+//        )
+        repository.savePosters(
             getAccessToken(context),
             attractionName,
             posters

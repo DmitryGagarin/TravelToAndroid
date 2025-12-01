@@ -1,4 +1,4 @@
-package com.example.traveltoandroid.attractions
+package com.example.traveltoandroid.form
 
 data class AttractionCreateForm (
     val ownerTelegram: String,
