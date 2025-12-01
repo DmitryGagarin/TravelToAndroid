@@ -3,6 +3,9 @@ package com.example.traveltoandroid.utils
 import com.example.traveltoandroid.repository.attraction.AttractionRepository
 import com.example.traveltoandroid.repository.discussion.DiscussionRepository
 import com.example.traveltoandroid.repository.user.UserRepository
+import com.example.traveltoandroid.service.AttractionService
+import com.example.traveltoandroid.service.DiscussionService
+import com.example.traveltoandroid.service.UserService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -16,15 +19,28 @@ object RetrofitClient {
             .build()
     }
 
-    val attractionRepository : AttractionRepository by lazy {
-        retrofit.create(AttractionRepository::class.java)
+    private val attractionService: AttractionService by lazy {
+        retrofit.create(AttractionService::class.java)
     }
 
-    val discussionRepository : DiscussionRepository by lazy {
-        retrofit.create(DiscussionRepository::class.java)
+    val attractionRepository: AttractionRepository by lazy {
+        AttractionRepository(attractionService)
     }
 
-    val userRepository : UserRepository by lazy {
-        retrofit.create(UserRepository::class.java)
+    private val discussionService: DiscussionService by lazy {
+        retrofit.create(DiscussionService::class.java)
     }
+
+    val discussionRepository: DiscussionRepository by lazy {
+        DiscussionRepository(discussionService)
+    }
+
+    private val userService: UserService by lazy {
+        retrofit.create(UserService::class.java)
+    }
+
+    val userRepository: UserRepository by lazy {
+        UserRepository(userService)
+    }
+
 }

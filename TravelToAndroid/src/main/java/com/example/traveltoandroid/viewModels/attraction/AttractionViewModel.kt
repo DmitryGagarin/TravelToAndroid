@@ -95,7 +95,7 @@ class AttractionViewModel(
             try {
 //                val response = RetrofitClient.discussionService.getDiscussionsByAttractionName(attractionName)
                 val response = discussionRepository.getDiscussionsByAttractionName(attractionName, getAccessToken(context))
-                _discussions.value = response._embedded.discussionModelList
+                _discussions.value = response
             } catch (e: Exception) {
                 e.printStackTrace()
 
