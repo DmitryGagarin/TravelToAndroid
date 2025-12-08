@@ -3,8 +3,8 @@ package com.example.traveltoandroid.viewModels.user
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.traveltoandroid.form.UserSignUpFormFirst
-import com.example.traveltoandroid.form.UserSignUpFormSecond
+import com.example.traveltoandroid.form.UserSignUpFirstForm
+import com.example.traveltoandroid.form.UserSignUpSecondForm
 import com.example.traveltoandroid.models.AuthUser
 import com.example.traveltoandroid.repository.user.UserRepository
 import com.example.traveltoandroid.utils.RetrofitClient
@@ -48,7 +48,7 @@ class SignUpViewModel(
 
         viewModelScope.launch {
             try {
-                val form = UserSignUpFormFirst(
+                val form = UserSignUpFirstForm(
                     email = email,
                     password = password,
                     privacyPoliceAgreed = privacyPoliceAgreed,
@@ -80,7 +80,7 @@ class SignUpViewModel(
 
         viewModelScope.launch {
             try {
-                val form = UserSignUpFormSecond(name, surname)
+                val form = UserSignUpSecondForm(name, surname)
 //                val response = RetrofitClient.userService.signUpSecond(getAccessToken(context), form)
                 val response = repository.signUpSecond(getAccessToken(context), form)
                 _user.value = response

@@ -35,7 +35,7 @@ import com.example.traveltoandroid.viewModels.attraction.AttractionViewModelFact
 import com.example.traveltoandroid.viewModels.attraction.interfaces.IAttractionViewModel
 
 @Composable
-fun PreviewAttractionCard(
+fun AttractionPreviewCard(
     attraction: AttractionModel,
     hasMoreButton: Boolean,
     modifier: Modifier = Modifier,

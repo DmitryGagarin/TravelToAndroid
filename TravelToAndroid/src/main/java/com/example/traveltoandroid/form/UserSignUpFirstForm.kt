@@ -1,6 +1,6 @@
 package com.example.traveltoandroid.form
 
-data class UserSignUpFormFirst (
+data class UserSignUpFirstForm (
     val email: String?,
     val password: String?,
     val privacyPoliceAgreed: Boolean?,

@@ -41,7 +41,7 @@ import androidx.navigation.NavController
 import com.example.traveltoandroid.R
 import com.example.traveltoandroid.attractions.AttractionDataCard
 import com.example.traveltoandroid.attractions.AttractionDiscussionCard
-import com.example.traveltoandroid.attractions.PreviewAttractionCard
+import com.example.traveltoandroid.attractions.AttractionPreviewCard
 import com.example.traveltoandroid.viewModels.attraction.AttractionViewModelFactory
 import com.example.traveltoandroid.viewModels.attraction.interfaces.IAttractionViewModel
 import com.example.traveltoandroid.views.discussion.CreateDiscussionView
@@ -144,7 +144,7 @@ fun AttractionView(
                     ) {
                         item {
                             attraction?.let {
-                                PreviewAttractionCard(
+                                AttractionPreviewCard(
                                     attraction = it,
                                     hasMoreButton = false,
                                     modifier = Modifier

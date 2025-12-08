@@ -2,8 +2,8 @@ package com.example.traveltoandroid.service
 
 import com.example.traveltoandroid.form.UserProfileForm
 import com.example.traveltoandroid.form.UserSignInForm
-import com.example.traveltoandroid.form.UserSignUpFormFirst
-import com.example.traveltoandroid.form.UserSignUpFormSecond
+import com.example.traveltoandroid.form.UserSignUpFirstForm
+import com.example.traveltoandroid.form.UserSignUpSecondForm
 import com.example.traveltoandroid.models.AuthUser
 import com.example.traveltoandroid.models.UserModel
 import retrofit2.http.Body
@@ -18,12 +18,12 @@ interface UserService {
     suspend fun signIn(@Body signInForm: UserSignInForm): AuthUser
 
     @POST("signup")
-    suspend fun signUpFirst(@Body signUpFormFirst: UserSignUpFormFirst): AuthUser
+    suspend fun signUpFirst(@Body signUpFormFirst: UserSignUpFirstForm): AuthUser
 
     @POST("signup/name")
     suspend fun signUpSecond(
         @Header("Authorization") token: String,
-        @Body signUpFormSecond: UserSignUpFormSecond
+        @Body signUpFormSecond: UserSignUpSecondForm
     ): AuthUser
 
     @POST("signin/verify-account/{email}")

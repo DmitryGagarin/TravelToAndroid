@@ -2,8 +2,8 @@ package com.example.traveltoandroid.repository.user
 
 import com.example.traveltoandroid.form.UserProfileForm
 import com.example.traveltoandroid.form.UserSignInForm
-import com.example.traveltoandroid.form.UserSignUpFormFirst
-import com.example.traveltoandroid.form.UserSignUpFormSecond
+import com.example.traveltoandroid.form.UserSignUpFirstForm
+import com.example.traveltoandroid.form.UserSignUpSecondForm
 import com.example.traveltoandroid.models.AuthUser
 import com.example.traveltoandroid.models.UserModel
 import com.example.traveltoandroid.service.UserService
@@ -18,14 +18,14 @@ class UserRepository (
     }
 
     suspend fun signUpFirst(
-        form: UserSignUpFormFirst
+        form: UserSignUpFirstForm
     ): AuthUser {
         return service.signUpFirst(form)
     }
 
     suspend fun signUpSecond(
         token: String,
-        form: UserSignUpFormSecond
+        form: UserSignUpSecondForm
     ): AuthUser {
         return service.signUpSecond(token, form)
     }

@@ -19,10 +19,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -95,7 +97,7 @@ fun SettingsView(onBackClick: () -> Unit, navController: NavController) {
 @Composable
 fun SettingItem(
     text: String,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     route: String,
     navController: NavController
 ) {
@@ -105,22 +107,25 @@ fun SettingItem(
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(
+        TextButton(
             onClick = {
                 navController.navigate(route)
             }
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = text,
-                modifier = Modifier
-                    .size(36.dp)
-                    .padding(end = 16.dp)
-            )
+            Row {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = text,
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(end = 16.dp)
+                )
+                Text(
+                    text = text,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
         }
-        Text(
-            text = text,
-            modifier = Modifier.weight(1f)
-        )
     }
 }

@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.traveltoandroid.attractions.PreviewAttractionCard
+import com.example.traveltoandroid.attractions.AttractionPreviewCard
 import com.example.traveltoandroid.models.AttractionModel
 
 @Composable
@@ -39,7 +39,7 @@ fun LikeView(navController: NavController) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        PreviewAttractionCard(
+        AttractionPreviewCard(
             attraction = attraction,
             hasMoreButton = true,
             modifier = Modifier.align(Alignment.CenterHorizontally),
