@@ -20,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -28,19 +29,20 @@ import androidx.navigation.NavController
 import com.example.traveltoandroid.R
 import com.example.traveltoandroid.attractions.AttractionPreviewCard
 import com.example.traveltoandroid.viewModels.attraction.AttractionsViewModel
-import com.example.traveltoandroid.viewModels.attraction.interfaces.IAttractionsViewModel
 
 @Composable
 fun AttractionsView(
     navController: NavController,
-    viewModel: IAttractionsViewModel = viewModel<AttractionsViewModel>()
+    viewModel: AttractionsViewModel = viewModel()
 ) {
+    val context = LocalContext.current
     val attractions by viewModel.attractions.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
 
+    // Load likes when view appears
     LaunchedEffect(Unit) {
-        viewModel.loadPublishedAttractions()
+        viewModel.loadUserLikes(context)
     }
 
     Column(
@@ -108,14 +110,14 @@ fun AttractionsView(
             ) {
                 items(
                     items = attractions,
-                    key = { attraction -> attraction.name!! }
+                    key = { attraction -> attraction.name ?: attraction.hashCode().toString() }
                 ) { attraction ->
                     AttractionPreviewCard(
                         attraction = attraction,
                         hasMoreButton = true,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .testTag("attraction_item_${attraction.name}"),
+                            .testTag("attraction_item_${attraction.name ?: "unknown"}"),
                         navController = navController
                     )
                 }

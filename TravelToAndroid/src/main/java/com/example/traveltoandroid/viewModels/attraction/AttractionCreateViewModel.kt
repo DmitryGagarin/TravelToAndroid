@@ -132,12 +132,6 @@ class AttractionCreateViewModel (
             val formJson = gson.toJson(attractionCreateForm)
             val attractionRequestBody = formJson.toRequestBody("application/json".toMediaTypeOrNull())
 
-//            RetrofitClient.attractionService.createAttraction(
-//                getAccessToken(context),
-//                attractionRequestBody,
-//                attractionImages
-//            )
-//
             repository.createAttraction(
                 getAccessToken(context),
                 attractionRequestBody,

@@ -70,11 +70,11 @@ object Constants {
             icon = Icons.Filled.Favorite,
             route = "like"
         ),
-        BottomNavItem(
-            label = "Articles",
-            icon = Icons.Default.Menu,
-            route = "articles"
-        ),
+//        BottomNavItem(
+//            label = "Articles",
+//            icon = Icons.Default.Menu,
+//            route = "articles"
+//        ),
         BottomNavItem(
             label = "Account",
             icon = Icons.Filled.Person,

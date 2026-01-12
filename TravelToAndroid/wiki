@@ -1,0 +1,24 @@
+MutableStateFlow:
+    Stores a single value
+    When user changes values, all watching apps get notified
+    New app opens
+    Изменение значения в одном случае, меняет это значение везде
+    Concurrent
+    Пример с загрузкой:
+        Что-то грузим - показываем spinner
+        Закончили загрузку - отменили _isLoading
+        Все упоминания isLoading поменяли значения
+    MutableStateFlow = Walkie-talkie with memory
+    Если использовать классические переменные, придется делать всякие callbacks обновляющие их
+
+Coroutines:
+    Workers that can do multiple jobs without blocking the app
+    Suspend functions can be paused and resumed
+    Don't block threads
+    Coroutines run on threads
+    Feature	    Coroutines	                    Threads
+    Weight	    ⚖️ Lightweight (thousands)	    🐘 Heavy (dozens)
+    Memory	    📦 2KB each	                    📦 1MB+ each
+    Switching	⚡ Fast (no OS involved)	        🐢 Slow (OS context switch)
+    Blocking	❌ Never blocks thread	        ✅ Blocks thread
+    Android	    ✅ Recommended	                ⚠️ Use with caution

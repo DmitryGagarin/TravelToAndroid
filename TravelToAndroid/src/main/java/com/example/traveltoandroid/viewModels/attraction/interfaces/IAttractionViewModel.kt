@@ -12,10 +12,7 @@ interface IAttractionViewModel {
     val discussions: StateFlow<List<DiscussionModel>>
     val isLoadingDiscussions: StateFlow<Boolean>
     val errorDiscussions: StateFlow<String?>
-    val isLoadingLike: StateFlow<Boolean>
-    val errorLike: StateFlow<String?>
 
     fun loadAttractionData(context: Context)
     fun refreshAttractionAndDiscussions(context: Context)
-    fun likeAttraction(context: Context)
 }

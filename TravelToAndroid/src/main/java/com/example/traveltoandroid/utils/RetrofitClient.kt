@@ -1,10 +1,12 @@
 package com.example.traveltoandroid.utils
 
 import com.example.traveltoandroid.repository.attraction.AttractionRepository
+import com.example.traveltoandroid.repository.attraction.LikeRepository
 import com.example.traveltoandroid.repository.discussion.DiscussionRepository
 import com.example.traveltoandroid.repository.user.UserRepository
 import com.example.traveltoandroid.service.AttractionService
 import com.example.traveltoandroid.service.DiscussionService
+import com.example.traveltoandroid.service.LikeService
 import com.example.traveltoandroid.service.UserService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -43,4 +45,11 @@ object RetrofitClient {
         UserRepository(userService)
     }
 
+    private val likeService: LikeService by lazy {
+        retrofit.create(LikeService::class.java)
+    }
+
+    val likeRepository: LikeRepository by lazy {
+        LikeRepository(likeService)
+    }
 }

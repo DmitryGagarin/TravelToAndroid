@@ -39,30 +39,17 @@ class AttractionViewModel(
     private val _errorDiscussions = MutableStateFlow<String?>(null)
     override val errorDiscussions: StateFlow<String?> get() = _errorDiscussions.asStateFlow()
 
-    private val _isLoadingLike = MutableStateFlow(false)
-    override val isLoadingLike: StateFlow<Boolean> get() = _isLoadingAttraction.asStateFlow()
-
-    private val _errorLike = MutableStateFlow<String?>(null)
-    override val errorLike: StateFlow<String?> get() = _errorLike.asStateFlow()
-
-
     override fun loadAttractionData(context: Context) {
         loadAttractionByName(context)
         loadDiscussionsForAttraction(context)
     }
 
-    private fun loadAttractionByName(
-        context: Context
-    ) {
+    private fun loadAttractionByName(context: Context) {
         _isLoadingAttraction.value = true
         _errorAttraction.value = null
 
         viewModelScope.launch {
             try {
-//                val response = RetrofitClient.attractionService.getAttractionByName(
-//                    getAccessToken(context),
-//                    attractionName
-//                )
                 val response = attractionRepository.getAttractionByName(
                     getAccessToken(context),
                     attractionName
@@ -70,14 +57,12 @@ class AttractionViewModel(
                 _attraction.value = response
             } catch (e: Exception) {
                 e.printStackTrace()
-
                 _errorAttraction.value = when {
-                    e.message?.contains("EPERM") == true -> "Network permission denied. Check internet permissions."
-                    e.message?.contains("failed to connect") == true -> "Cannot connect to server. Check URL and server status."
-                    e.message?.contains("timeout") == true -> "Connection timeout. Server might be down."
-                    else -> "Failed to load attractions: ${e.message}"
+                    e.message?.contains("EPERM") == true -> "Network permission denied."
+                    e.message?.contains("failed to connect") == true -> "Cannot connect to server."
+                    e.message?.contains("timeout") == true -> "Connection timeout."
+                    else -> "Failed to load attraction: ${e.message}"
                 }
-
                 _attraction.value = null
             } finally {
                 _isLoadingAttraction.value = false
@@ -85,60 +70,28 @@ class AttractionViewModel(
         }
     }
 
-    private fun loadDiscussionsForAttraction(
-        context: Context
-    ) {
+    private fun loadDiscussionsForAttraction(context: Context) {
         _isLoadingDiscussions.value = true
         _errorDiscussions.value = null
 
         viewModelScope.launch {
             try {
-//                val response = RetrofitClient.discussionService.getDiscussionsByAttractionName(attractionName)
-                val response = discussionRepository.getDiscussionsByAttractionName(attractionName, getAccessToken(context))
+                val response = discussionRepository.getDiscussionsByAttractionName(
+                    attractionName,
+                    getAccessToken(context)
+                )
                 _discussions.value = response
             } catch (e: Exception) {
                 e.printStackTrace()
-
                 _errorDiscussions.value = when {
-                    e.message?.contains("EPERM") == true -> "Network permission denied. Check internet permissions."
-                    e.message?.contains("failed to connect") == true -> "Cannot connect to server. Check URL and server status."
-                    e.message?.contains("timeout") == true -> "Connection timeout. Server might be down."
+                    e.message?.contains("EPERM") == true -> "Network permission denied."
+                    e.message?.contains("failed to connect") == true -> "Cannot connect to server."
+                    e.message?.contains("timeout") == true -> "Connection timeout."
                     else -> "Failed to load discussions: ${e.message}"
                 }
-
                 _discussions.value = emptyList()
             } finally {
                 _isLoadingDiscussions.value = false
-            }
-        }
-    }
-
-    override fun likeAttraction(
-        context: Context
-    ) {
-        _isLoadingLike.value = true
-        _errorLike.value = null
-        viewModelScope.launch {
-            try {
-//                RetrofitClient.attractionService.likeAttraction(
-//                    getAccessToken(context),
-//                    attractionName
-//                )
-                attractionRepository.likeAttraction(
-                    getAccessToken(context),
-                    attractionName
-                )
-            } catch (e: Exception) {
-                e.printStackTrace()
-
-                _errorLike.value = when {
-                    e.message?.contains("EPERM") == true -> "Network permission denied. Check internet permissions."
-                    e.message?.contains("failed to connect") == true -> "Cannot connect to server. Check URL and server status."
-                    e.message?.contains("timeout") == true -> "Connection timeout. Server might be down."
-                    else -> "Failed to load attractions: ${e.message}"
-                }
-            } finally {
-                _isLoadingLike.value = false
             }
         }
     }
@@ -148,5 +101,4 @@ class AttractionViewModel(
         _discussions.value = emptyList()
         loadAttractionData(context)
     }
-
 }

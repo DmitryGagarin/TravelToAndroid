@@ -7,6 +7,7 @@ import com.example.traveltoandroid.form.CreateDiscussionForm
 import com.example.traveltoandroid.repository.discussion.DiscussionRepository
 import com.example.traveltoandroid.utils.RetrofitClient
 import com.example.traveltoandroid.utils.getAccessToken
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,13 +42,8 @@ class DiscussionViewModel(
                     liked,
                     disliked,
                     content,
-                    rating
+                    rating = "5"
                 )
-//                RetrofitClient.discussionService.sendDiscussion(
-//                    attractionName,
-//                    getAccessToken(context),
-//                    form
-//                )
 
                 repository.sendDiscussion(
                     attractionName,

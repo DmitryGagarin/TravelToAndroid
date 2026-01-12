@@ -100,5 +100,13 @@ dependencies {
 
     // Mocking
     androidTestImplementation(libs.mockk.android)
-    androidTestImplementation(libs.kotlinx.coroutines.test)
+
+    // Test dependencies
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test.v181)
+    testImplementation(libs.mockk)
+
+    // For viewModelScope testing
+    testImplementation(libs.androidx.lifecycle.viewmodel.ktx)
+    testImplementation(libs.androidx.lifecycle.runtime.ktx.v262)
 }

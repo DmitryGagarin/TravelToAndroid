@@ -46,7 +46,7 @@ fun CreateDiscussionView(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ),
         modifier = modifier
-            .size(width = 340.dp, height = 200.dp)
+            .size(width = 340.dp, height = 400.dp)
     ) {
         TextField(
             value = title,

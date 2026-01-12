@@ -42,8 +42,10 @@ import com.example.traveltoandroid.R
 import com.example.traveltoandroid.attractions.AttractionDataCard
 import com.example.traveltoandroid.attractions.AttractionDiscussionCard
 import com.example.traveltoandroid.attractions.AttractionPreviewCard
+import com.example.traveltoandroid.viewModels.attraction.AttractionsViewModel
 import com.example.traveltoandroid.viewModels.attraction.AttractionViewModelFactory
 import com.example.traveltoandroid.viewModels.attraction.interfaces.IAttractionViewModel
+import com.example.traveltoandroid.viewModels.attraction.interfaces.ILikeViewModel
 import com.example.traveltoandroid.views.discussion.CreateDiscussionView
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,24 +54,26 @@ fun AttractionView(
     navController: NavController,
     onBackClick: () -> Unit,
     attractionName: String,
-    viewModel: IAttractionViewModel = viewModel(
+    attractionViewModel: IAttractionViewModel = viewModel(
         factory = AttractionViewModelFactory(attractionName)
-    )
+    ),
+    likeViewModel: ILikeViewModel = viewModel<AttractionsViewModel>()
 ) {
-    val attraction by viewModel.attraction.collectAsState()
-    val isLoadingAttraction by viewModel.isLoadingAttraction.collectAsState()
-    val errorAttraction by viewModel.errorAttraction.collectAsState()
+    val attraction by attractionViewModel.attraction.collectAsState()
+    val isLoadingAttraction by attractionViewModel.isLoadingAttraction.collectAsState()
+    val errorAttraction by attractionViewModel.errorAttraction.collectAsState()
 
-    val discussions by viewModel.discussions.collectAsState()
-    val isLoadingDiscussions by viewModel.isLoadingDiscussions.collectAsState()
-    val errorDiscussions by viewModel.errorDiscussions.collectAsState()
+    val discussions by attractionViewModel.discussions.collectAsState(emptyList()) // Provide default value
+    val isLoadingDiscussions by attractionViewModel.isLoadingDiscussions.collectAsState()
+    val errorDiscussions by attractionViewModel.errorDiscussions.collectAsState()
 
     var discussionCreationIsVisible by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.loadAttractionData(context)
+        attractionViewModel.loadAttractionData(context)
+        likeViewModel.loadUserLikes(context)
     }
 
     Scaffold(
@@ -124,7 +128,7 @@ fun AttractionView(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(
-                            onClick = { viewModel.refreshAttractionAndDiscussions(context) }
+                            onClick = { attractionViewModel.refreshAttractionAndDiscussions(context) }
                         ) {
                             Text(stringResource(R.string.try_again))
                         }
@@ -151,7 +155,7 @@ fun AttractionView(
                                         .fillMaxWidth()
                                         .testTag("attraction_filled"),
                                     navController = navController,
-                                    viewModel = viewModel
+                                    viewModel = likeViewModel
                                 )
                                 Spacer(modifier = Modifier.width(10.dp))
                             }
@@ -168,17 +172,17 @@ fun AttractionView(
                         }
 
                         item {
-                            Button(onClick = {
-                                discussionCreationIsVisible = !discussionCreationIsVisible
-                            }, modifier = Modifier.testTag("discussion_creation_is_visible")) {
+                            Button(
+                                onClick = {
+                                    discussionCreationIsVisible = !discussionCreationIsVisible
+                                },
+                                modifier = Modifier.testTag("discussion_creation_is_visible")
+                            ) {
                                 Text(
-                                    text =
-                                    if (discussionCreationIsVisible) {
+                                    text = if (discussionCreationIsVisible) {
                                         stringResource(R.string.cancel)
                                     } else {
-                                        stringResource(
-                                            R.string.send_discussion
-                                        )
+                                        stringResource(R.string.send_discussion)
                                     }
                                 )
                             }
@@ -219,7 +223,7 @@ fun AttractionView(
                                         Spacer(modifier = Modifier.height(16.dp))
                                         Button(
                                             onClick = {
-                                                viewModel.refreshAttractionAndDiscussions(
+                                                attractionViewModel.refreshAttractionAndDiscussions(
                                                     context
                                                 )
                                             }
@@ -229,10 +233,10 @@ fun AttractionView(
                                     }
                                 }
                             }
-
                             else -> {
+                                val safeDiscussions = discussions ?: emptyList()
                                 items(
-                                    items = discussions,
+                                    items = safeDiscussions,
                                     key = { discussion -> discussion.title ?: "" }
                                 ) { discussion ->
                                     AttractionDiscussionCard(

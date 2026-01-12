@@ -5,5 +5,5 @@ data class PagedDiscussionResponse(
 )
 
 data class EmbeddedDiscussionList(
-    val discussionModelList: List<DiscussionModel>
+    val attractionDiscussionModelList: List<DiscussionModel>
 )
